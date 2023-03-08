@@ -54,12 +54,15 @@ function internalORM(sequelize) {
         sequelize, tableName: 'Pulpit', modelName: 'Pulpit', timestamps: false
     });
 
+
     Faculty.hasMany(Pulpit, {
         as: 'faculty_pulpits',
         foreignKey: 'faculty',
         sourceKey: 'faculty',
         onDelete: 'CASCADE'
     });
+
+
 
     Pulpit.belongsTo(Faculty, {
         as: 'faculty_pulpits',
@@ -138,6 +141,22 @@ function internalORM(sequelize) {
         },
         sequelize, tableName: 'Auditorium', modelName: 'Auditorium', timestamps: false
     })
+
+
+    Auditorium_type.hasMany(Auditorium, {
+        as: 'auditorium_type_auditorium',
+        foreignKey: 'auditorium_type',
+        sourceKey: 'auditorium_type',
+        onDelete: 'CASCADE'
+    });
+
+    Auditorium.belongsTo(Auditorium_type, {
+        as: 'auditorium_type_auditorium',
+        foreignKey: 'auditorium_type',
+        sourceKey: 'auditorium_type',
+        onDelete: 'CASCADE'
+    });
+
 }
 
 exports.ORM = (s) => {

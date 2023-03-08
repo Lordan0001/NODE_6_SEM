@@ -5,6 +5,7 @@ const subjectHandler = require("./RequestHandlers/subjectHandler");
 const auditoriumHandler = require("./RequestHandlers/auditoriumHandler");
 const errorHandler = require('./RequestHandlers/errorHandler');
 const facultyHandler = require("./RequestHandlers/facultyHandler");
+const teacherHandler = require("./RequestHandlers/teacherHandler");
 
 
 module.exports = (request,response) =>
@@ -37,6 +38,10 @@ module.exports = (request,response) =>
         case (/\/api\/auditoriumtypes/).test(path):
         {
             auditoriumtypeHandler(request, response);break;          
+        }
+        case (/\/api\/teachers/).test(path):
+        {
+            teacherHandler(request, response);break;
         }
         default:       
         {

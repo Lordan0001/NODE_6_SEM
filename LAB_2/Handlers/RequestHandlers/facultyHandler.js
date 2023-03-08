@@ -3,6 +3,8 @@ const errorHandler = require('../RequestHandlers/errorHandler');
 const {Faculty} = require('../../Models/model').ORM(dbConnection);
 const {Pulpit} = require('../../Models/model').ORM(dbConnection);
 const {Teacher} = require('../../Models/model').ORM(dbConnection);
+const {Auditorium} = require('../../Models/model').ORM(dbConnection);
+const {AuditoriumType} = require('../../Models/model').ORM(dbConnection);
 
 function addFaculty(request, response, body) 
 {
@@ -40,47 +42,25 @@ module.exports = function (request, response) {
         case "GET": 
         {
             const path = request.url;      
-            if (/\/api\/faculties\/.*\/pulpits/.test(path)) 
+            if (/\/api\/faculties\/.*\/pulpits/.test(path))
             {
+
                 Faculty.findAll
                 ({
                     include: [{model: Pulpit, as: 'faculty_pulpits', required: true}],
                     where: {faculty: decodeURI(path.split('/')[3])}
-                }).then(result => 
-                    {
+                }).then(result =>
+                {
                         if (result == 0) 
                         {
-                            throw new Error('Pulpits not found')
+                            throw new Error('fac not found')
                         } else 
                         {
                             response.end(JSON.stringify(result))
                         }
                     })
                     .catch(err => errorHandler(response, 500, err.message));
-            } else if (/\/api\/faculties\/.*\/teachers/.test(path)) 
-            {
-                Faculty.findAll(
-                    {
-                    include: [
-                        {
-                            model: Pulpit, as: 'faculty_pulpits', required: true,
-                            include: [{model: Teacher, as: 'pulpit_teachers', required: true}]
-                        }
-                    ],
-                    where: {faculty: decodeURI(path.split('/')[3])}
-                })
-                    .then(result => 
-                        {
-                        if (result == 0) 
-                        {
-                            throw new Error('Teachers not found')
-                        } else 
-                        {
-                            response.end(JSON.stringify(result))
-                        }
-                    })
-                    .catch(err => errorHandler(response, 500, err.message));
-                }
+            }
             else
             {  
             Faculty.findAll()
