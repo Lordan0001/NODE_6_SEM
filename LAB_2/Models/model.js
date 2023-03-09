@@ -134,9 +134,10 @@ function internalORM(sequelize) {
             auditoriumsgt60: {
                 where: {
                     auditorium_capacity: {
-                        [Sequelize.Op.gt]: 60
+                        [Sequelize.Op.between]: [10,60]
                     }
                 }
+
             }
         },
         sequelize, tableName: 'Auditorium', modelName: 'Auditorium', timestamps: false

@@ -9,6 +9,35 @@ const {Auditorium} = require('../../Models/model').ORM(dbConnection);
 module.exports = function (request, response) {
     response.writeHead(200, {'Content-Type': 'application/json; charset=utf-8'});
 
+    function addAuditoriumtype(request, response, body) {
+        Auditorium_type.create(
+            {
+                auditorium_type: body.auditorium_type,
+                auditorium_typename: body.auditorium_typename
+            })
+            .then(result =>
+            {
+                response.end(JSON.stringify(result));
+            })
+            .catch(error => errorHandler(response, 500, error.message));
+    }
+
+    function updateAuditoriumtype(request, response, body)
+    {
+        Auditorium_type.update({auditorium_typename: body.auditorium_typename}, {where: {auditorium_type: body.auditorium_type}})
+            .then(result =>
+            {
+                if (result == 0)
+                {
+                    throw new Error('AuditoriumType not found')
+                }
+                else {
+                    response.end(JSON.stringify(body))
+                }
+            })
+            .catch(error => errorHandler(response, 500, error.message));
+    }
+
     switch (request.method)
     {
         case "GET":
@@ -119,31 +148,3 @@ module.exports = function (request, response) {
     }
 };
 
-function addAuditoriumtype(request, response, body) {
-    Auditorium_type.create(
-        {
-            auditorium_type: body.auditorium_type,
-            auditorium_typename: body.auditorium_typename
-        })
-        .then(result =>
-        {
-            response.end(JSON.stringify(result));
-        })
-        .catch(error => errorHandler(response, 500, error.message));
-}
-
-function updateAuditoriumtype(request, response, body)
-{
-    Auditorium_type.update({auditorium_typename: body.auditorium_typename}, {where: {auditorium_type: body.auditorium_type}})
-        .then(result =>
-        {
-            if (result == 0)
-            {
-                throw new Error('AuditoriumType not found')
-            }
-            else {
-                response.end(JSON.stringify(body))
-            }
-        })
-        .catch(error => errorHandler(response, 500, error.message));
-}

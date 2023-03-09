@@ -108,6 +108,7 @@ module.exports = function (request, response) {
         }
         case "DELETE": 
         {
+            console.log(request.url.split('/')[3] + '<--- this shit comes')
             Faculty.findByPk(request.url.split('/')[3])
                 .then(result => 
                 {

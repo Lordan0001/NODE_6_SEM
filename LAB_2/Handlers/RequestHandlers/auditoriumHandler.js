@@ -46,6 +46,7 @@ module.exports = function(request,response)
 
             if (/api\/auditoriumsgt60/.test(path)) 
             {
+                console.log('got in scope')
                 let auditoriums = Auditorium.scope('auditoriumsgt60').findAll();
                 auditoriums
                     .then(result => {

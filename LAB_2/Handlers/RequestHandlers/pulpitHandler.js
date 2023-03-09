@@ -87,6 +87,7 @@ module.exports = function (request, response)
 
         case "DELETE": 
         {
+
             Pulpit.findByPk(request.url.split('/')[3])
             .then(result => 
             {
