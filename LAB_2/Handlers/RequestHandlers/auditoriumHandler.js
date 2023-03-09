@@ -57,25 +57,25 @@ module.exports = function(request,response)
             else if (/api\/auditoriumstransaction/.test(path)) 
             {
                 return dbConnection.transaction({isolationLevel: Sequelize.Transaction.ISOLATION_LEVELS.READ_COMMITTED})
-                    .then(t => 
+                    .then(t =>
                         {
-                        return Auditorium.findAll().then(auditoriums => 
+                        return Auditorium.findAll().then(auditoriums =>
                             {
-                            auditoriums.forEach(auditorium => 
+                            auditoriums.forEach(auditorium =>
                                 {
-                                    return auditorium.update({auditorium_capacity : 90});                 
+                                    return auditorium.update({auditorium_capacity : 0});
                                 })
                         }, {transaction: t})
-                            .then(result => 
+                            .then(result =>
                             {
-                                Auditorium.findAll().then((res) => 
+                                Auditorium.findAll().then((res) =>
                                 {
                                     response.end(JSON.stringify(res));
                                 })
                             })
-                            .then(() => 
+                            .then(() =>
                             {
-                                setTimeout( () =>  t.rollback(), 3000);
+                                setTimeout( () =>  t.rollback(), 10000);
                             })
                             .catch( err =>
                             {

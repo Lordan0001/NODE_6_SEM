@@ -26,13 +26,17 @@ function internalORM(sequelize) {
     }, {
         hooks: {
             beforeCreate(attributes, options) {
-                console.log('--local beforeCreate faculty');
-                console.log(attributes);
-                console.log(options);
-                attributes.dataValues.faculty_name = 'GC';
+                console.log(' beforeCreate faculty');
+                //console.log(attributes);
+                //console.log(options);
+                attributes.dataValues.faculty_name = 'BeforeHook';
             },
             afterCreate(attributes, options) {
-                console.log('--local afterCreate faculty');
+                console.log(' afterCreate faculty');
+                console.log(attributes);
+            },
+            beforeDestroy(attributes, options) {
+                console.log(' beforeDelete (beforeDestroy) Hook');
                 console.log(attributes);
             }
         },
