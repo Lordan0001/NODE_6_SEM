@@ -5,7 +5,7 @@ const {Teacher} = require('../../Models/model').ORM(dbConnection);
 function addTeacher(request,response,body) {
  Teacher.create({
      teacher: body.teacher,
-     teacher_name: body.teacher,
+     teacher_name: body.teacher_name,
      pulpit: body.pulpit
  }).then(result =>{
      response.end(JSON.stringify(result));
@@ -15,7 +15,7 @@ function addTeacher(request,response,body) {
 
 function updateTeacher(request, response, body)
 {
-    Teacher.update({teacher: body.teacher_name}, {where: {teacher: body.teacher}})
+    Teacher.update({teacher_name: body.teacher_name}, {where: {teacher: body.teacher}})
         .then(result =>
         {
             if (result == 0)
