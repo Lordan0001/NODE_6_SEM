@@ -35,10 +35,11 @@ function internalORM(sequelize) {
                 console.log(' afterCreate faculty');
                 console.log(attributes);
             },
-            beforeDestroy(attributes, options) {
+            beforeBulkDestroy(attributes, options) {
                 console.log(' beforeDelete (beforeDestroy) Hook');
                 console.log(attributes);
             }
+
         },
         sequelize, tableName: 'Faculty', modelName: 'Faculty', timestamps: false
     });
@@ -56,7 +57,8 @@ function internalORM(sequelize) {
     }, 
     {
         sequelize, tableName: 'Pulpit', modelName: 'Pulpit', timestamps: false
-    });
+    }
+        );
 
 
     Faculty.hasMany(Pulpit, {
@@ -135,7 +137,7 @@ function internalORM(sequelize) {
         }
     }, {
         scopes: {
-            auditoriumsgt60: {
+            auditoriumsbtw60: {
                 where: {
                     auditorium_capacity: {
                         [Sequelize.Op.between]: [10,60]
