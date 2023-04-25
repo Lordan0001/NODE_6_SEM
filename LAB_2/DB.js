@@ -1,9 +1,9 @@
 const Sequelize = require("sequelize");
-const sequelize = new Sequelize("Node_14", "SYS", "orcl",
+const sequelize = new Sequelize("Node_14", "main", "toor",
 {
     dialect: "mssql",
     host: "localhost",
-    port: "1433",
+    port: "49816",
     pool: {
         max: 10,
         min: 0,
