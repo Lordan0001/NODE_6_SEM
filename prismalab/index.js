@@ -12,19 +12,7 @@ prisma.$on('query', e => {
     console.log('Params ' + e.params)
 })
 
-prisma.$transaction(async (prisma) => {
-    await prisma.AUDITORIUM.updateMany({
 
-        data: {
-            AUDITORIUM_CAPACITY: {
-                increment: 100
-            }
-        }
-    })
-    throw new Error(`Some error`);
-}).catch(e => {
-    console.log(e)
-})
 
 let server = http.createServer(async (req, res) => {
     if (req.method === "GET") {
@@ -62,6 +50,23 @@ let server = http.createServer(async (req, res) => {
                 res.end(JSON.stringify(faculties))
             }
         }
+        else if (url.parse(req.url).pathname === "/api/trans") {
+            prisma.$transaction(async (prisma) => {
+                await prisma.AUDITORIUM.updateMany({
+
+                    data: {
+                        AUDITORIUM_CAPACITY: {
+                            increment: 100
+                        }
+                    }
+                })
+                throw new Error(`Some error`);
+            }).catch(e => {
+                console.log(e)
+            })
+        }
+
+
         else if (url.parse(req.url).pathname === "/api/subjects") {
             const subjects = await prisma.SUBJECT.findMany()
             res.end(JSON.stringify(subjects))
@@ -156,6 +161,55 @@ let server = http.createServer(async (req, res) => {
     }
     //------------------------------------POST
     else if (req.method === "POST") {//TODO add postman
+        // if (url.parse(req.url).pathname === "/api/faculties") {
+        //     let data = "";
+        //     req.on('data', chunk => {
+        //         data += chunk;
+        //     });
+        //     req.on('end', async () => {
+        //         data = JSON.parse(data);
+        //         let FACULTY;
+        //         try {
+        //         console.log(data.PULPIT)
+        //             if (data.PULPIT) {
+        //                 // const pulpits = data.PULPIT.map(pulpitData => ({
+        //                 //     PULPIT: pulpitData.PULPIT,
+        //                 //     PULPIT_NAME: pulpitData.PULPIT_NAME
+        //                 // }));
+        //                 FACULTY = await prisma.FACULTY.create({
+        //                     data: {
+        //                         FACULTY: data.FACULTY,
+        //                         FACULTY_NAME: data.FACULTY_NAME,
+        //                         PULPIT_PULPIT_FACULTYToFACULTY: {
+        //                             // createMany: {
+        //                             //     data: pulpits
+        //                             // }
+        //                             create: {
+        //                                 PULPIT: `${data.PULPIT}`,
+        //                                 PULPIT_NAME: `${data.PULPIT_NAME}`
+        //                             }
+        //                         }
+        //                     },
+        //                     include: {PULPIT_PULPIT_FACULTYToFACULTY: true}
+        //                 });
+        //
+        //             } else {
+        //                 FACULTY = await prisma.FACULTY.create({
+        //                     data: {
+        //
+        //                         FACULTY: data.FACULTY,
+        //                         FACULTY_NAME: data.FACULTY_NAME
+        //                     },
+        //                 })
+        //             }
+        //             res.end(JSON.stringify(FACULTY))
+        //         }
+        //         catch{
+        //             res.end(JSON.stringify('adding error'))
+        //         }
+        //     })
+        // }
+        //new one
         if (url.parse(req.url).pathname === "/api/faculties") {
             let data = "";
             req.on('data', chunk => {
@@ -163,45 +217,35 @@ let server = http.createServer(async (req, res) => {
             });
             req.on('end', async () => {
                 data = JSON.parse(data);
-                let FACULTY;
-                try {
-                console.log(data.PULPIT)
-                    if (data.PULPIT) {
-                        // const pulpits = data.PULPIT.map(pulpitData => ({
-                        //     PULPIT: pulpitData.PULPIT,
-                        //     PULPIT_NAME: pulpitData.PULPIT_NAME
-                        // }));
-                        FACULTY = await prisma.FACULTY.create({
-                            data: {
-                                FACULTY: data.FACULTY,
-                                FACULTY_NAME: data.FACULTY_NAME,
-                                PULPIT_PULPIT_FACULTYToFACULTY: {
-                                    // createMany: {
-                                    //     data: pulpits
-                                    // }
-                                    create: {
-                                        PULPIT: `${data.PULPIT}`,
-                                        PULPIT_NAME: `${data.PULPIT_NAME}`
-                                    }
+                let faculty;
+                if (data.Pulpit) {
+                    const pulpits = data.Pulpit.map(pulpitData => ({
+                        PULPIT: pulpitData.pulpit,
+                        PULPIT_NAME: pulpitData.pulpit_name
+                    }));
+                    faculty = await prisma.FACULTY.create({
+                        data: {
+                            FACULTY: data.faculty,
+                            FACULTY_NAME: data.faculty_name,
+                            PULPIT_PULPIT_FACULTYToFACULTY: {
+                                createMany: {
+                                    data: pulpits
                                 }
-                            },
-                            include: {PULPIT_PULPIT_FACULTYToFACULTY: true}
-                        });
+                            }
+                        },
+                        include: { PULPIT_PULPIT_FACULTYToFACULTY: true }
+                    });
 
-                    } else {
-                        FACULTY = await prisma.FACULTY.create({
-                            data: {
+                } else {
+                    faculty = await prisma.FACULTY.create({
+                        data: {
 
-                                FACULTY: data.FACULTY,
-                                FACULTY_NAME: data.FACULTY_NAME
-                            },
-                        })
-                    }
-                    res.end(JSON.stringify(FACULTY))
+                            FACULTY: data.faculty,
+                            FACULTY_NAME: data.faculty_name
+                        },
+                    })
                 }
-                catch{
-                    res.end(JSON.stringify('adding error'))
-                }
+                res.end(JSON.stringify(faculty))
             })
         }
 
