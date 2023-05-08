@@ -160,7 +160,7 @@ let server = http.createServer(async (req, res) => {
 
     }
     //------------------------------------POST
-    else if (req.method === "POST") {//TODO add postman
+    else if (req.method === "POST") {
         // if (url.parse(req.url).pathname === "/api/faculties") {
         //     let data = "";
         //     req.on('data', chunk => {
