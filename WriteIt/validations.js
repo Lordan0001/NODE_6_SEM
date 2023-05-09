@@ -11,3 +11,10 @@ export const registerValidation =[
     body('fullName',"Enter your name").isLength({min: 3}),
     body('avatarUrl','Bad url to image').optional().isURL(),
 ]
+
+export const postCreateValidation =[
+    body('title',"Enter post title").isLength({min: 3}).isString(),
+    body('text','Fill the post column').isLength({min: 3}).isString(),
+    body('tags',"Wrong tag format").optional().isString(),
+    body('imageUrl','Bad url to image').optional().isString(),
+]
