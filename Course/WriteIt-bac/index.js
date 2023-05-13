@@ -9,7 +9,9 @@ import { registerValidation, loginValidation, postCreateValidation } from './val
 
 import { handleValidationErrors, checkAuth } from './utils/index.js';
 
-import { UserController, PostController } from './controllers/index.js';
+import { UserController, PostController, CommentController } from './controllers/index.js';
+import {getAllComments} from "./controllers/CommentController.js";
+import Comment from "./models/Comment.js";
 
 mongoose
   .connect( 'mongodb+srv://admin:admin@cluster0.klivmmt.mongodb.net/blog?retryWrites=true&w=majority')
@@ -47,19 +49,24 @@ app.post('/upload', checkAuth, upload.single('image'), (req, res) => {
 });
 
 app.get('/tags', PostController.getLastTags);
-
+app.get('/comments', CommentController.getAllComments);
+app.get('/comments/:id', CommentController.getOneComment);
 app.get('/posts', PostController.getAll);
 app.get('/posts/tags', PostController.getLastTags);
 app.get('/posts/:id', PostController.getOne);
+
 app.post('/posts', checkAuth, postCreateValidation, handleValidationErrors, PostController.create);
+app.post('/comments',checkAuth, CommentController.createComments);
+
 app.delete('/posts/:id', checkAuth, PostController.remove);
+app.delete('/comments/:id', checkAuth, CommentController.removeComment);
 app.patch(
-  '/posts/:id',
-  checkAuth,
-  postCreateValidation,
-  handleValidationErrors,
-  PostController.update,
+  '/posts/:id', checkAuth, postCreateValidation, handleValidationErrors, PostController.update,
 );
+app.patch(
+    '/comments/:id', checkAuth, CommentController.updateComment,
+);
+
 
 app.listen(process.env.PORT || 4444, (err) => {
   if (err) {
