@@ -6,6 +6,11 @@ export const fetchPosts = createAsyncThunk('posts/fetchPosts', async () => {
   return data;
 });
 
+export const fetchComments = createAsyncThunk('posts/fetchComments', async () => {
+  const { data } = await axios.get('/comments');
+  return data;
+});
+
 export const fetchTags = createAsyncThunk('posts/fetchTags', async () => {
   const { data } = await axios.get('/tags');
   return data;
@@ -24,6 +29,10 @@ const initialState = {
     status: 'loading',
   },
   tags: {
+    items: [],
+    status: 'loading',
+  },
+  comments: {
     items: [],
     status: 'loading',
   },
@@ -60,6 +69,20 @@ const postsSlice = createSlice({
     [fetchTags.rejected]: (state) => {
       state.tags.items = [];
       state.tags.status = 'error';
+    },
+
+    // Получение комментраиев
+    [fetchComments.pending]: (state) => {
+      state.comments.items = [];
+      state.comments.status = 'loading';
+    },
+    [fetchComments.fulfilled]: (state, action) => {
+      state.comments.items = action.payload;
+      state.comments.status = 'loaded';
+    },
+    [fetchComments.rejected]: (state) => {
+      state.comments.items = [];
+      state.comments.status = 'error';
     },
 
     // Удаление статьи

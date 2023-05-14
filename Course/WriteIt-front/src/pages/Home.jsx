@@ -7,19 +7,22 @@ import Grid from '@mui/material/Grid';
 import { Post } from '../components/Post';
 import { TagsBlock } from '../components/TagsBlock';
 import { CommentsBlock } from '../components/CommentsBlock';
-import { fetchPosts, fetchTags } from '../redux/slices/posts';
+import {fetchComments, fetchPosts, fetchTags} from '../redux/slices/posts';
+import axios from "../axios";
 
 export const Home = () => {
   const dispatch = useDispatch();
   const userData = useSelector((state) => state.auth.data);
-  const { posts, tags } = useSelector((state) => state.posts);
+  const { posts, tags,comments } = useSelector((state) => state.posts);
 
   const isPostsLoading = posts.status === 'loading';
   const isTagsLoading = tags.status === 'loading';
+  const isCommentsLoading = comments.status === 'loading';
 
   React.useEffect(() => {
     dispatch(fetchPosts());
     dispatch(fetchTags());
+    dispatch(fetchComments());
   }, []);
 
   return (
@@ -51,7 +54,7 @@ export const Home = () => {
         <Grid xs={4} item>
           <TagsBlock items={tags.items} isLoading={isTagsLoading} />
           <CommentsBlock
-            items={[
+            items={ comments.items} isLoading= {isCommentsLoading/*[
               {
                 user: {
                   fullName: 'test1 test1',
@@ -65,7 +68,7 @@ export const Home = () => {
                   avatarUrl: 'https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1331&q=80',
                 },
                   text: 'test comment2',              },
-            ]}
+            ]*/}
             isLoading={false}
           />
         </Grid>
