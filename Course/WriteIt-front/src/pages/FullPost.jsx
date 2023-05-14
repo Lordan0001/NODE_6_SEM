@@ -2,9 +2,8 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 import axios from '../axios';
-
+import '../components/AddComment/CommentStyle.css';
 import { Post } from '../components/Post';
-import { Index } from '../components/AddComment';
 import { CommentsBlock } from '../components/CommentsBlock';
 
 export const FullPost = () => {
@@ -12,6 +11,7 @@ export const FullPost = () => {
     const [isLoading, setLoading] = React.useState(true);
     const [comments, setComments] = React.useState([]);
     const { id } = useParams();
+    const [commentText, setCommentText] = React.useState('');
 
     React.useEffect(() => {
         axios
@@ -34,7 +34,27 @@ export const FullPost = () => {
                 console.warn(err);
                 alert('Ошибка при получении комментариев');
             });
-    }, []);
+    }, [id]);
+
+    const handleCommentSubmit = (event) => {
+        event.preventDefault();
+
+        const commentData = {
+            postId: id,
+            text: commentText,
+        };
+
+        axios
+            .post('/comments', commentData)
+            .then((res) => {
+                setComments([...comments, res.data]);
+                setCommentText('');
+            })
+            .catch((err) => {
+                console.warn(err);
+                alert('Ошибка при отправке комментария');
+            });
+    };
 
     if (isLoading) {
         return <Post isLoading={isLoading} isFullPost />;
@@ -46,8 +66,6 @@ export const FullPost = () => {
                 id={data._id}
                 title={data.title}
                 imageUrl={`http://localhost:4444${data.imageUrl}`}
-                //imageUrl={data.imageUrl ? `${process.env.REACT_APP_API_URL}${data.imageUrl}` : ''}
-                // imageUrl="https://res.cloudinary.com/practicaldev/image/fetch/s--UnAfrEG8--/c_imagga_scale,f_auto,fl_progressive,h_420,q_auto,w_1000/https://dev-to-uploads.s3.amazonaws.com/uploads/articles/icohm5g0axh9wjmu4oc3.png"
                 user={data.user}
                 createdAt={data.createdAt}
                 viewsCount={data.viewsCount}
@@ -56,13 +74,18 @@ export const FullPost = () => {
                 isFullPost>
                 <ReactMarkdown children={data.text} />
             </Post>
-            {comments.length === 0 ? (
-                <p>Напишите первый комментарий</p>
-            ) : (
                 <CommentsBlock items={comments} isLoading={false}>
-                    <Index />
+                    <form onSubmit={handleCommentSubmit}>
+                        <input
+                            type="text"
+                            value={commentText}
+                            onChange={(event) => setCommentText(event.target.value)}
+                            placeholder="Написать комментарий..."
+                        />
+                        <button type="submit">Отправить</button>
+                    </form>
                 </CommentsBlock>
-            )}
+            
         </>
     );
 };
