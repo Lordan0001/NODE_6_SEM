@@ -8,7 +8,7 @@ import { Post } from '../components/Post';
 import { TagsBlock } from '../components/TagsBlock';
 import { CommentsBlock } from '../components/CommentsBlock';
 import {fetchComments, fetchPosts, fetchTags} from '../redux/slices/posts';
-import axios from "../axios";
+
 
 export const Home = () => {
   const dispatch = useDispatch();
@@ -54,22 +54,8 @@ export const Home = () => {
         <Grid xs={4} item>
           <TagsBlock items={tags.items} isLoading={isTagsLoading} />
           <CommentsBlock
-            items={ comments.items} isLoading= {isCommentsLoading/*[
-              {
-                user: {
-                  fullName: 'test1 test1',
-                  avatarUrl: 'https://images.freeimages.com/images/large-previews/ca2/woodbud-vii-1632173.jpg',
-                },
-                text: 'test comment1',
-              },
-              {
-                user: {
-                  fullName: 'test2 test2',
-                  avatarUrl: 'https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1331&q=80',
-                },
-                  text: 'test comment2',              },
-            ]*/}
-            isLoading={false}
+            items={ comments.items} isLoading= {isCommentsLoading}
+           // isLoading={false}
           />
         </Grid>
       </Grid>

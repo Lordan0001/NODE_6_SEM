@@ -152,3 +152,20 @@ export const update = async (req, res) => {
     });
   }
 };
+
+export const getPostsWithTag = async (req,res) =>{
+  const tagToSearch = req.params.tagname;
+  try {
+    const posts = await PostModel.find(
+        {
+          tags:tagToSearch
+        }
+    ).populate('user').exec();
+    res.json(posts);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({
+      message: 'Не удалось получить статьи по тегу',
+    });
+  }
+}

@@ -85,7 +85,7 @@ export const FullPost = () => {
                         <button type="submit">Отправить</button>
                     </form>
                 </CommentsBlock>
-            
+
         </>
     );
 };

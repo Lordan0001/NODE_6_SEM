@@ -49,6 +49,9 @@ app.post('/upload', checkAuth, upload.single('image'), (req, res) => {
 });
 
 app.get('/tags', PostController.getLastTags);
+
+app.get('/tags/:tagname',PostController.getPostsWithTag)
+
 app.get('/comments', CommentController.getAllComments);
 app.get('/comments/:id', CommentController.getOneComment);
 app.get('/posts', PostController.getAll);
