@@ -36,11 +36,11 @@ export const createComments = async (req, res) => {
 
 export const getOneComment = async (req, res) => {
   try {
-    const commentId = req.params.id;
+    const postId = req.params.id;
 
-    CommentModel.findOne(
+    CommentModel.find(
         {
-          _id: commentId,
+          post: postId,
         },
         (err, doc) => {
           if (err) {
