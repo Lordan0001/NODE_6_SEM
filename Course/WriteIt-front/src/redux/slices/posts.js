@@ -14,8 +14,8 @@ export const fetchCategories = createAsyncThunk('posts/fetchCategories', async (
 
 
 export const fetchPostsTags = createAsyncThunk('posts/fetchPostsTags', async ({ tagname }) => {
-  const url = `/tags/${tagname}`;
-  const response = await axios.get(url);
+  //const url = `/${tagsWord}/${tagname}`;
+  const response = await axios.get(`/tags/${tagname}`);
   return response.data;
 });
 

@@ -7,7 +7,14 @@ import Grid from '@mui/material/Grid';
 import { Post } from '../components/Post';
 import { TagsBlock } from '../components/TagsBlock';
 import { CommentsBlock } from '../components/CommentsBlock';
-import {fetchComments, fetchPosts, fetchTags, fetchCategories, fetchCategoriesWithTags} from '../redux/slices/posts';
+import {
+  fetchComments,
+  fetchPosts,
+  fetchTags,
+  fetchCategories,
+  fetchCategoriesWithTags,
+  fetchPostsTags
+} from '../redux/slices/posts';
 import {useParams} from "react-router-dom";
 
 
@@ -16,16 +23,19 @@ export const SubForum = () => {
   const userData = useSelector((state) => state.auth.data);
   const { posts, tags,comments,categories } = useSelector((state) => state.posts);
   const { tagfilter } = useParams();
-
-
+  const fullUrl = window.location.href;
+  const urlParts = fullUrl.split("/");
+  let tagname = urlParts[4];
+  
   const isPostsLoading = posts.status === 'loading';
   const isTagsLoading = tags.status === 'loading';
   const isCommentsLoading = comments.status === 'loading';
   const isCategoriesLoading = categories.status === 'loading';
 
   React.useEffect(() => {
-    dispatch(fetchPosts());
+    //dispatch(fetchPosts());
     //dispatch(fetchTags());
+    dispatch(fetchPostsTags( {tagname} ));
     dispatch(fetchCategoriesWithTags({tagfilter}));
     dispatch(fetchComments());
     dispatch(fetchCategories());
