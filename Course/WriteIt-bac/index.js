@@ -9,7 +9,7 @@ import { registerValidation, loginValidation, postCreateValidation } from './val
 
 import { handleValidationErrors, checkAuth } from './utils/index.js';
 
-import { UserController, PostController, CommentController } from './controllers/index.js';
+import { UserController, PostController, CommentController,CategoryController } from './controllers/index.js';
 import {getAllComments} from "./controllers/CommentController.js";
 import Comment from "./models/Comment.js";
 
@@ -49,17 +49,20 @@ app.post('/upload', checkAuth, upload.single('image'), (req, res) => {
 });
 
 app.get('/tags', PostController.getLastTags);
+app.get('/categories', CategoryController.getAllCategories);
 
 app.get('/tags/:tagname',PostController.getPostsWithTag)
 
 app.get('/comments', CommentController.getAllComments);
 app.get('/comments/:id', CommentController.getOneComment);
 app.get('/posts', PostController.getAll);
+app.get('/post/popular', PostController.getAllPopular);
 app.get('/posts/tags', PostController.getLastTags);
 app.get('/posts/:id', PostController.getOne);
 
 app.post('/posts', checkAuth, postCreateValidation, handleValidationErrors, PostController.create);
 app.post('/comments',checkAuth, CommentController.createComments);
+app.post('/categories', CategoryController.createCategory);
 
 app.delete('/posts/:id', checkAuth, PostController.remove);
 app.delete('/comments/:id', checkAuth, CommentController.removeComment);

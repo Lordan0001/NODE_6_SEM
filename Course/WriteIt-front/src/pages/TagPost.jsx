@@ -29,10 +29,10 @@ export const TagPost = () => {
 
   return (
       <>
-        <Tabs style={{ marginBottom: 15 }} value={0} aria-label="basic tabs example">
-          <Tab label="Новые" />
-          <Tab label="Популярные" />
-        </Tabs>
+        {/*<Tabs style={{ marginBottom: 15 }} value={0} aria-label="basic tabs example">*/}
+        {/*  <Tab label="Новые" />*/}
+        {/*  <Tab label="Популярные" />*/}
+        {/*</Tabs>*/}
         <Grid container spacing={4}>
           <Grid xs={8} item>
             {(isPostsLoading ? [...Array(5)] : posts.items).map((obj, index) =>
