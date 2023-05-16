@@ -6,11 +6,27 @@ export const fetchPosts = createAsyncThunk('posts/fetchPosts', async () => {
   return data;
 });
 
+export const fetchCategories = createAsyncThunk('posts/fetchCategories', async () => {
+  const { data } = await axios.get('/categories');
+  return data;
+});
+
+
+
 export const fetchPostsTags = createAsyncThunk('posts/fetchPostsTags', async ({ tagname }) => {
   const url = `/tags/${tagname}`;
   const response = await axios.get(url);
   return response.data;
 });
+
+export const fetchCategoriesWithTags = createAsyncThunk('posts/fetchCategoriesWithTags', async ({ tagfilter }) => {
+  const url = `/subforum/${tagfilter}`;
+  const response = await axios.get(url);
+  return response.data;
+});
+
+
+
 
 
 export const fetchComments = createAsyncThunk('posts/fetchComments', async () => {
@@ -43,6 +59,10 @@ const initialState = {
     items: [],
     status: 'loading',
   },
+  categories: {
+    items: [],
+    status: 'loading',
+  },
 };
 
 const postsSlice = createSlice({
@@ -62,6 +82,19 @@ const postsSlice = createSlice({
     [fetchPosts.rejected]: (state) => {
       state.posts.items = [];
       state.posts.status = 'error';
+    },
+    // Получение категорий
+    [fetchCategories.pending]: (state) => {
+      state.categories.items = [];
+      state.categories.status = 'loading';
+    },
+    [fetchCategories.fulfilled]: (state, action) => {
+      state.categories.items = action.payload;
+      state.categories.status = 'loaded';
+    },
+    [fetchCategories.rejected]: (state) => {
+      state.categories.items = [];
+      state.categories.status = 'error';
     },
     // Получение статей по тегам
     [fetchPostsTags.pending]: (state) => {
@@ -87,6 +120,19 @@ const postsSlice = createSlice({
       state.tags.status = 'loaded';
     },
     [fetchTags.rejected]: (state) => {
+      state.tags.items = [];
+      state.tags.status = 'error';
+    },
+    // Получение тегов к конкретной категории
+    [fetchCategoriesWithTags.pending]: (state) => {
+      state.tags.items = [];
+      state.tags.status = 'loading';
+    },
+    [fetchCategoriesWithTags.fulfilled]: (state, action) => {
+      state.tags.items = action.payload;
+      state.tags.status = 'loaded';
+    },
+    [fetchCategoriesWithTags.rejected]: (state) => {
       state.tags.items = [];
       state.tags.status = 'error';
     },

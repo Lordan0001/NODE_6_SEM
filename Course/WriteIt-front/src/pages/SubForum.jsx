@@ -6,16 +6,16 @@ import Grid from '@mui/material/Grid';
 
 import { Post } from '../components/Post';
 import { TagsBlock } from '../components/TagsBlock';
-import { SubForumBlock } from '../components/SubForumBlock';
 import { CommentsBlock } from '../components/CommentsBlock';
-import {fetchComments, fetchPosts, fetchTags,fetchCategories} from '../redux/slices/posts';
+import {fetchComments, fetchPosts, fetchTags, fetchCategories, fetchCategoriesWithTags} from '../redux/slices/posts';
+import {useParams} from "react-router-dom";
 
 
-export const Home = () => {
+export const SubForum = () => {
   const dispatch = useDispatch();
   const userData = useSelector((state) => state.auth.data);
   const { posts, tags,comments,categories } = useSelector((state) => state.posts);
-
+  const { tagfilter } = useParams();
 
 
   const isPostsLoading = posts.status === 'loading';
@@ -25,7 +25,8 @@ export const Home = () => {
 
   React.useEffect(() => {
     dispatch(fetchPosts());
-    dispatch(fetchTags());
+    //dispatch(fetchTags());
+    dispatch(fetchCategoriesWithTags({tagfilter}));
     dispatch(fetchComments());
     dispatch(fetchCategories());
   }, []);
@@ -57,7 +58,7 @@ export const Home = () => {
           )}
         </Grid>
         <Grid xs={4} item>
-          <SubForumBlock items={categories.items} isLoading={isTagsLoading} />
+          <TagsBlock items={tags.items} isLoading={isTagsLoading} />
           <CommentsBlock
             items={ comments.items} isLoading= {isCommentsLoading}
            // isLoading={false}

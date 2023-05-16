@@ -49,6 +49,7 @@ export const FullPost = () => {
             .then((res) => {
                 setComments([...comments, res.data]);
                 setCommentText('');
+                setTimeout(() => window.location.reload(), 1500);//mb cringe
             })
             .catch((err) => {
                 console.warn(err);
@@ -74,17 +75,17 @@ export const FullPost = () => {
                 isFullPost>
                 <ReactMarkdown children={data.text} />
             </Post>
-                <CommentsBlock items={comments} isLoading={false}>
-                    <form onSubmit={handleCommentSubmit}>
-                        <input
-                            type="text"
-                            value={commentText}
-                            onChange={(event) => setCommentText(event.target.value)}
-                            placeholder="Написать комментарий..."
-                        />
-                        <button type="submit">Отправить</button>
-                    </form>
-                </CommentsBlock>
+            <CommentsBlock items={comments} isLoading={false}>
+                <form onSubmit={handleCommentSubmit}>
+                    <input
+                        type="text"
+                        value={commentText}
+                        onChange={(event) => setCommentText(event.target.value)}
+                        placeholder="Написать комментарий..."
+                    />
+                    <button type="submit">Отправить</button>
+                </form>
+            </CommentsBlock>
 
         </>
     );

@@ -1,5 +1,29 @@
 import PostModel from '../models/Post.js';
 
+
+export const tagsGroupByOneTag = async (req, res) => {
+  const tagFilter = req.params.tagfilter;
+  try {
+    const posts = await PostModel.find({
+      tags: tagFilter
+    }).exec();
+
+    const tags = posts
+        .map((obj) => obj.tags)
+        .flat()
+        .filter((value, index, self) => {
+          return self.indexOf(value) === index;
+        });
+
+    res.json(tags);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({
+      message: 'Не удалось получить тэги',
+    });
+  }
+};
+
 export const getLastTags = async (req, res) => {
   try {
     const posts = await PostModel.find().exec();
