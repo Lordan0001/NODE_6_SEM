@@ -9,7 +9,7 @@ import List from "@mui/material/List";
 import Skeleton from "@mui/material/Skeleton";
 import Button from "@mui/material/Button";
 
-export const CommentsBlock = ({ items, children, isLoading = true }) => {
+export const UserBlock = ({ items, children, isLoading = true }) => {
     const [showDropdown, setShowDropdown] = useState(false);
     const displayedItems = isLoading ? [...Array(5)] : items.slice(0, 5);
     const remainingItems = isLoading ? [] : items.slice(5);

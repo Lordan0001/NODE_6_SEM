@@ -1,14 +1,13 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
 import Grid from '@mui/material/Grid';
 
-import { Post } from '../components/Post';
+import { Post,SubForumBlock,CommentsBlock,UserBlock } from '../components';
 import { TagsBlock } from '../components/TagsBlock';
-import { SubForumBlock } from '../components/SubForumBlock';
-import { CommentsBlock } from '../components/CommentsBlock';
+//import { SubForumBlock } from '../components';
+//import { CommentsBlock } from '../components';
 import {fetchComments, fetchPosts, fetchTags,fetchCategories} from '../redux/slices/posts';
+//import {UserBlock} from "../components";
 
 
 export const Home = () => {
@@ -54,10 +53,9 @@ export const Home = () => {
         </Grid>
         <Grid xs={4} item>
           <SubForumBlock items={categories.items} isLoading={isTagsLoading} />
-          <CommentsBlock
-            items={ comments.items} isLoading= {isCommentsLoading}
-           // isLoading={false}
-          />
+          <CommentsBlock items={ comments.items} isLoading= {isCommentsLoading}/>
+
+          {/*<UserBlock items={  comments.items} isLoading= {isCommentsLoading}/>*/}
         </Grid>
       </Grid>
     </>

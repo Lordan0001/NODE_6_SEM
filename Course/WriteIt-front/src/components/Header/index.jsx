@@ -29,10 +29,10 @@ export const Header = () => {
               {isAuth ? (
                   <>
                     <Link to="/add-post">
-                      <Button variant="contained">Написать статью</Button>
+                      <Button variant="contained">Сreate a discussion</Button>
                     </Link>
                     <Button onClick={onClickLogout} variant="contained" color="error">
-                      Выйти
+                      Log out
                     </Button>
                   </>
               ) : (

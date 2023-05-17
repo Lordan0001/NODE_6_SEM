@@ -20,7 +20,7 @@ export const TagsBlock = ({ items, isLoading = true }) => {
     const visibleItems = expanded ? items : items.slice(0, 5);
 
     return (
-        <SideBlock title="Тэги">
+        <SideBlock title="Subsections">
             <List>
                 {visibleItems.map((name, i) => (
                     <a style={{ textDecoration: 'none', color: 'black' }} href={`/tags/${name}`} key={i}>

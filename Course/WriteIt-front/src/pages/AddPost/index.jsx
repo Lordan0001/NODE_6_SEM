@@ -92,7 +92,7 @@ export const AddPost = () => {
       spellChecker: false,
       maxHeight: '400px',
       autofocus: true,
-      placeholder: 'Введите текст...',
+      placeholder: 'Write text...',
       status: false,
       autosave: {
         enabled: true,
@@ -109,7 +109,7 @@ export const AddPost = () => {
   return (
     <Paper style={{ padding: 30 }}>
       <Button onClick={() => inputFileRef.current.click()} variant="outlined" size="large">
-        Загрузить превью
+       Upload image
       </Button>
       <input ref={inputFileRef} type="file" onChange={handleChangeFile} hidden />
       {imageUrl && (
@@ -117,13 +117,6 @@ export const AddPost = () => {
           <Button variant="contained" color="error" onClick={onClickRemoveImage}>
             Удалить
           </Button>
-          {/*<img*/}
-          {/*  className={styles.image}*/}
-          {/*  src={`http://localhost:4444}${imageUrl}`}*/}
-
-          {/*  alt="Uploaded"*/}
-
-          {/*/>*/}
         </>
       )}
       <br />
@@ -133,7 +126,7 @@ export const AddPost = () => {
         // onChange={(e) => setTitle(e.target.value)}
         classes={{ root: styles.title }}
         variant="standard"
-        placeholder="Заголовок статьи..."
+        placeholder="Enter title"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
         fullWidth
@@ -143,16 +136,16 @@ export const AddPost = () => {
         onChange={(e) => setTags(e.target.value)}
         classes={{ root: styles.tags }}
         variant="standard"
-        placeholder="Тэги"
+        placeholder="Tags"
         fullWidth
       />
       <SimpleMDE className={styles.editor} value={text} onChange={onChange} options={options} />
       <div className={styles.buttons}>
         <Button onClick={onSubmit} size="large" variant="contained">
-          {isEditing ? 'Сохранить' : 'Опубликовать'}
+          {isEditing ? 'Save' : 'Publish'}
         </Button>
         <a href="/">
-          <Button size="large">Отмена</Button>
+          <Button size="large">Cancel</Button>
         </a>
       </div>
     </Paper>

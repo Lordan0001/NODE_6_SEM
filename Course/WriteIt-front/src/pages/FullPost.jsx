@@ -81,9 +81,9 @@ export const FullPost = () => {
                         type="text"
                         value={commentText}
                         onChange={(event) => setCommentText(event.target.value)}
-                        placeholder="Написать комментарий..."
+                        placeholder="Write Something..."
                     />
-                    <button type="submit">Отправить</button>
+                    <button type="submit">Send</button>
                 </form>
             </CommentsBlock>
 
