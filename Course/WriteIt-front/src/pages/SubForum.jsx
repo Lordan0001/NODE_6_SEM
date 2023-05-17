@@ -62,7 +62,7 @@ export const SubForum = () => {
                 viewsCount={obj.viewsCount}
                 commentsCount={comments.count}//problem here
                 tags={obj.tags}
-                isEditable={userData?._id === obj.user._id}
+                isEditable={userData?._id === obj.user._id || userData?.role === 'admin' }
               />
             ),
           )}

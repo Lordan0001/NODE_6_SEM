@@ -32,10 +32,6 @@ export const TagPost = () => {
 
   return (
       <>
-        {/*<Tabs style={{ marginBottom: 15 }} value={0} aria-label="basic tabs example">*/}
-        {/*  <Tab label="Новые" />*/}
-        {/*  <Tab label="Популярные" />*/}
-        {/*</Tabs>*/}
         <Grid container spacing={4}>
           <Grid xs={8} item>
             {(isPostsLoading ? [...Array(5)] : posts.items).map((obj, index) =>
@@ -51,7 +47,7 @@ export const TagPost = () => {
                         viewsCount={obj.viewsCount}
                         commentsCount={3}
                         tags={obj.tags}
-                        isEditable={userData?._id === obj.user._id}
+                        isEditable={userData?._id === obj.user._id || userData?.role === 'admin' }
                     />
                 ),
             )}

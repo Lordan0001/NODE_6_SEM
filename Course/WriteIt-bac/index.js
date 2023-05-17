@@ -9,10 +9,11 @@ import { registerValidation, loginValidation, postCreateValidation } from './val
 
 import { handleValidationErrors, checkAuth } from './utils/index.js';
 
-import { UserController, PostController, CommentController,CategoryController } from './controllers/index.js';
+import { UserController, PostController, CommentController,CategoryController,RoleController } from './controllers/index.js';
 import {getAllComments} from "./controllers/CommentController.js";
 import Comment from "./models/Comment.js";
 import {getOneByName, tagsGroupByOneTag} from "./controllers/PostController.js";
+import {CreateRole} from "./controllers/RoleController.js";
 
 mongoose
   .connect( 'mongodb+srv://admin:admin@cluster0.klivmmt.mongodb.net/blog?retryWrites=true&w=majority')
@@ -66,8 +67,8 @@ app.get('/posts/:id', PostController.getOne);
 
 app.post('/posts', checkAuth, postCreateValidation, handleValidationErrors, PostController.create);
 app.post('/comments',checkAuth, CommentController.createComments);
-app.post('/categories', CategoryController.createCategory);
-
+app.post('/categories', CategoryController.createCategory);   CreateRole
+app.post('/roles', RoleController.CreateRole);
 app.delete('/posts/:id', checkAuth, PostController.remove);
 app.delete('/comments/:id', checkAuth, CommentController.removeComment);
 app.patch(

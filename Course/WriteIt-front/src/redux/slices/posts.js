@@ -19,6 +19,14 @@ export const fetchPostsTags = createAsyncThunk('posts/fetchPostsTags', async ({ 
   return response.data;
 });
 
+export const fetchSearchPosts = createAsyncThunk('posts/fetchSearchPosts', async ({ tagname }) => {
+  //const url = `/${tagsWord}/${tagname}`;
+  const response = await axios.get(`/search/${tagname}`);
+  return response.data;
+});
+
+
+
 export const fetchCategoriesWithTags = createAsyncThunk('posts/fetchCategoriesWithTags', async ({ tagfilter }) => {
   const url = `/subforum/${tagfilter}`;
   const response = await axios.get(url);
@@ -106,6 +114,20 @@ const postsSlice = createSlice({
       state.posts.status = 'loaded';
     },
     [fetchPostsTags.rejected]: (state) => {
+      state.posts.items = [];
+      state.posts.status = 'error';
+    },
+
+    // поиск
+    [fetchSearchPosts.pending]: (state) => {
+      state.posts.items = [];
+      state.posts.status = 'loading';
+    },
+    [fetchSearchPosts.fulfilled]: (state, action) => {
+      state.posts.items = action.payload;
+      state.posts.status = 'loaded';
+    },
+    [fetchSearchPosts.rejected]: (state) => {
       state.posts.items = [];
       state.posts.status = 'error';
     },

@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import role from "./Role.js";
 
 const UserSchema = new mongoose.Schema(
   {
@@ -15,6 +16,11 @@ const UserSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+      role:{
+        type: mongoose.Schema.Types.String,
+          ref: 'Role',
+          required: false
+      },
     avatarUrl: String,
   },
   {

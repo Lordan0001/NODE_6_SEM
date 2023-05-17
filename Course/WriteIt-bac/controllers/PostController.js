@@ -63,7 +63,15 @@ export const getOneByName = async (req, res) => {
       title: { $regex: regex }
     }).populate('user').exec();
 
-    res.json(posts);
+    if (posts.length === 0) {
+      return res.status(404).json({
+        message: 'Статья не найдена',
+      });
+    }
+
+    const secondTag = posts[0].tags[1]; // Assuming tags is an array
+
+    res.json(secondTag);
   } catch (err) {
     console.log(err);
     res.status(500).json({
@@ -71,6 +79,7 @@ export const getOneByName = async (req, res) => {
     });
   }
 };
+
 
 
 
