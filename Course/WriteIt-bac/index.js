@@ -12,7 +12,7 @@ import { handleValidationErrors, checkAuth } from './utils/index.js';
 import { UserController, PostController, CommentController,CategoryController } from './controllers/index.js';
 import {getAllComments} from "./controllers/CommentController.js";
 import Comment from "./models/Comment.js";
-import {tagsGroupByOneTag} from "./controllers/PostController.js";
+import {getOneByName, tagsGroupByOneTag} from "./controllers/PostController.js";
 
 mongoose
   .connect( 'mongodb+srv://admin:admin@cluster0.klivmmt.mongodb.net/blog?retryWrites=true&w=majority')
@@ -54,6 +54,8 @@ app.get('/subforum/:tagfilter',PostController.tagsGroupByOneTag); //new
 app.get('/categories', CategoryController.getAllCategories);
 
 app.get('/tags/:tagname',PostController.getPostsWithTag)
+
+app.get('/search/:id',PostController.getOneByName)
 
 app.get('/comments', CommentController.getAllComments);
 app.get('/comments/:id', CommentController.getOneComment);

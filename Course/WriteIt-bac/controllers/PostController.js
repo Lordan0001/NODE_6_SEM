@@ -53,6 +53,27 @@ export const getAll = async (req, res) => {
     });
   }
 };
+
+export const getOneByName = async (req, res) => {
+  const nameSearch = req.params.id;
+  const regex = new RegExp(nameSearch, 'i'); // Case-insensitive regex
+
+  try {
+    const posts = await PostModel.find({
+      title: { $regex: regex }
+    }).populate('user').exec();
+
+    res.json(posts);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({
+      message: 'Не удалось найти статью по названию',
+    });
+  }
+};
+
+
+
 export const getAllPopular = async (req, res) => {
   try {
     const posts = await PostModel.find()
@@ -67,8 +88,6 @@ export const getAllPopular = async (req, res) => {
     });
   }
 };
-
-
 
 export const getOne = async (req, res) => {
   try {

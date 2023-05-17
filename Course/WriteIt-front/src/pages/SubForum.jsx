@@ -26,7 +26,7 @@ export const SubForum = () => {
   const fullUrl = window.location.href;
   const urlParts = fullUrl.split("/");
   let tagname = urlParts[4];
-  
+
   const isPostsLoading = posts.status === 'loading';
   const isTagsLoading = tags.status === 'loading';
   const isCommentsLoading = comments.status === 'loading';
