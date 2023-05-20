@@ -1,6 +1,8 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Grid from '@mui/material/Grid';
+//import {soket} from '../../../WriteIt-bac/socket'
+//import { soket } from '../../../WriteIt-bac/index'
 
 import { Post,SubForumBlock,CommentsBlock,UserBlock } from '../components';
 import { TagsBlock } from '../components/TagsBlock';
@@ -8,7 +10,7 @@ import { TagsBlock } from '../components/TagsBlock';
 //import { CommentsBlock } from '../components';
 import {fetchComments, fetchPosts, fetchTags,fetchCategories} from '../redux/slices/posts';
 //import {UserBlock} from "../components";
-
+//import { w3cwebsocket as WebSocket } from 'websocket';
 
 export const Home = () => {
   const dispatch = useDispatch();
@@ -27,6 +29,11 @@ export const Home = () => {
     dispatch(fetchTags());
     dispatch(fetchComments());
     dispatch(fetchCategories());
+
+
+
+
+
   }, []);
 
   return (
@@ -40,7 +47,7 @@ export const Home = () => {
               <Post
                 id={obj._id}
                 title={obj.title}
-                imageUrl={`http://localhost:4444${obj.imageUrl}`}
+                imageUrl={`https://localhost:4444${obj.imageUrl}`}
                 user={obj.user}
                 createdAt={obj.createdAt}
                 viewsCount={obj.viewsCount}

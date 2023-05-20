@@ -22,6 +22,13 @@ const UserSchema = new mongoose.Schema(
           ref: 'Role',
           required: false
       },
+      SubscribedTo: {
+          type:Array,
+          ref: 'User',
+          required: false,
+          default:[],
+          uniq: true,
+      },
     avatarUrl: String,
   },
   {

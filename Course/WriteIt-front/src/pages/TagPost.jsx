@@ -41,7 +41,7 @@ export const TagPost = () => {
                     <Post
                         id={obj._id}
                         title={obj.title}
-                        imageUrl={`http://localhost:4444${obj.imageUrl}`}
+                        imageUrl={`https://localhost:4444${obj.imageUrl}`}
                         user={obj.user}
                         createdAt={obj.createdAt}
                         viewsCount={obj.viewsCount}

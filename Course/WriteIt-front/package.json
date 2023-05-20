@@ -24,10 +24,14 @@
     "react-scripts": "5.0.1",
     "react-simplemde-editor": "^5.0.2",
     "sass": "^1.52.1",
-    "web-vitals": "^2.1.4"
+    "socket.io": "^4.6.1",
+    "socket.io-client": "^4.6.1",
+    "web-vitals": "^2.1.4",
+    "websocket": "^1.0.34"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "set HTTPS=true&&set SSL_CRT_FILE=localhost.crt&&set SSL_KEY_FILE=localhost.key&&react-scripts start",
+    "default-start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

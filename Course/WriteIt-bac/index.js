@@ -2,17 +2,12 @@ import express from 'express';
 import fs from 'fs';
 import multer from 'multer';
 import cors from 'cors';
-
+import https from 'https';
 import mongoose from 'mongoose';
 
 import { registerValidation, loginValidation, postCreateValidation } from './validations.js';
-
 import { handleValidationErrors, checkAuth } from './utils/index.js';
-
 import { UserController, PostController, CommentController,CategoryController,RoleController } from './controllers/index.js';
-import {getAllComments} from "./controllers/CommentController.js";
-import Comment from "./models/Comment.js";
-import {getOneByName, tagsGroupByOneTag} from "./controllers/PostController.js";
 import {CreateRole} from "./controllers/RoleController.js";
 
 mongoose
@@ -79,10 +74,21 @@ app.patch(
 );
 
 
-app.listen(process.env.PORT || 4444, (err) => {
+const server = https.createServer({
+  key: fs.readFileSync('./cert/localhost.key', 'utf-8'),
+  cert: fs.readFileSync('./cert/localhost.crt', 'utf-8'),
+}, app)
+
+server.listen(process.env.PORT || 4444, (err) => {
   if (err) {
     return console.log(err);
   }
 
   console.log('Server OK');
 });
+
+// server.on('upgrade', (req, socket, head) => {
+//   wss.handleUpgrade(req, socket, head, (ws) => {
+//     wss.emit('connection', ws, req);
+//   });
+// });

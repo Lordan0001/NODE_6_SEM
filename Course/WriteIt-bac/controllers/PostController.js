@@ -69,9 +69,9 @@ export const getOneByName = async (req, res) => {
       });
     }
 
-    const secondTag = posts[0].tags[1]; // Assuming tags is an array
+    //const secondTag = posts[0].tags[1]; // Assuming tags is an array
 
-    res.json(secondTag);
+    res.json(posts);
   } catch (err) {
     console.log(err);
     res.status(500).json({

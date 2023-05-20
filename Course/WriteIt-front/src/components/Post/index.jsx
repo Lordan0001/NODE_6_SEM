@@ -12,6 +12,7 @@ import styles from './Post.module.scss';
 import { UserInfo } from '../UserInfo';
 import { PostSkeleton } from './Skeleton';
 import { fetchRemovePost } from '../../redux/slices/posts';
+import {HeartBroken} from "@mui/icons-material";
 
 export const Post = ({
   id,
@@ -75,7 +76,8 @@ export const Post = ({
           {children && <div className={styles.content}>{children}</div>}
           <ul className={styles.postDetails}>
             <li>
-              <EyeIcon />
+              <HeartBroken/>
+              {/*<EyeIcon />*/}
               <span>{viewsCount}</span>
             </li>
             <li>
