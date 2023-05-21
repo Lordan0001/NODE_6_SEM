@@ -17,8 +17,6 @@ export const Home = () => {
   const userData = useSelector((state) => state.auth.data);
   const { posts, tags,comments,categories } = useSelector((state) => state.posts);
 
-
-
   const isPostsLoading = posts.status === 'loading';
   const isTagsLoading = tags.status === 'loading';
   const isCommentsLoading = comments.status === 'loading';
@@ -29,11 +27,6 @@ export const Home = () => {
     dispatch(fetchTags());
     dispatch(fetchComments());
     dispatch(fetchCategories());
-
-
-
-
-
   }, []);
 
   return (

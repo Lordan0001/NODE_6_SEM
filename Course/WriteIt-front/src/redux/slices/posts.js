@@ -11,7 +11,10 @@ export const fetchCategories = createAsyncThunk('posts/fetchCategories', async (
   return data;
 });
 
-
+export const fetchPostsWithTagAndWithout = createAsyncThunk('posts/fetchPostsWithTagAndWithout', async ({mainTag,hideTag}) => {
+  const response = await axios.get(`/hide/${mainTag}/${hideTag}`);
+  return response.data;
+});
 
 export const fetchPostsTags = createAsyncThunk('posts/fetchPostsTags', async ({ tagname }) => {
   //const url = `/${tagsWord}/${tagname}`;
@@ -131,7 +134,19 @@ const postsSlice = createSlice({
       state.posts.items = [];
       state.posts.status = 'error';
     },
-
+    // по первому тегу без второго fetchPostsWithTagAndWithout
+    [fetchPostsWithTagAndWithout.pending]: (state) => {
+      state.posts.items = [];
+      state.posts.status = 'loading';
+    },
+    [fetchPostsWithTagAndWithout.fulfilled]: (state, action) => {
+      state.posts.items = action.payload;
+      state.posts.status = 'loaded';
+    },
+    [fetchPostsWithTagAndWithout.rejected]: (state) => {
+      state.posts.items = [];
+      state.posts.status = 'error';
+    },
     // Получение тегов
     [fetchTags.pending]: (state) => {
       state.tags.items = [];

@@ -16,6 +16,7 @@ import {
   fetchPostsTags
 } from '../redux/slices/posts';
 import {useParams} from "react-router-dom";
+import {HideBlock} from "../components";
 
 
 export const SubForum = () => {
@@ -43,10 +44,7 @@ export const SubForum = () => {
 
   return (
     <>
-{/*      <Tabs style={{ marginBottom: 15 }} value={0} aria-label="basic tabs example">
-        <Tab label="Новые" />
-        <Tab label="Популярные" />
-      </Tabs>*/}
+
       <Grid container spacing={4}>
         <Grid xs={8} item>
           {(isPostsLoading ? [...Array(5)] : posts.items).map((obj, index) =>
@@ -69,6 +67,7 @@ export const SubForum = () => {
         </Grid>
         <Grid xs={4} item>
           <TagsBlock items={tags.items} isLoading={isTagsLoading} />
+          <HideBlock items={tags.items} isLoading={isTagsLoading} />
           <CommentsBlock
             items={ comments.items} isLoading= {isCommentsLoading}
            // isLoading={false}

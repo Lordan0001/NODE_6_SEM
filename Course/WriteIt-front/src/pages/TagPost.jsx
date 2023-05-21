@@ -7,14 +7,15 @@ import Grid from '@mui/material/Grid';
 import { Post } from '../components/Post';
 import { TagsBlock } from '../components/TagsBlock';
 import { CommentsBlock } from '../components/CommentsBlock';
-import {fetchComments, fetchPosts, fetchPostsTags, fetchTags} from '../redux/slices/posts';
+import {fetchCategories, fetchComments, fetchPosts, fetchPostsTags, fetchTags} from '../redux/slices/posts';
 import {useParams} from "react-router-dom";
+import {SubForumBlock} from "../components";
 
 
 export const TagPost = () => {
   const dispatch = useDispatch();
   const userData = useSelector((state) => state.auth.data);
-  const { posts, tags, comments } = useSelector((state) => state.posts);
+  const { posts, tags, comments,categories  } = useSelector((state) => state.posts);
   const { tagname } = useParams();
 
   const isPostsLoading = posts.status === 'loading';
@@ -28,6 +29,7 @@ export const TagPost = () => {
     dispatch(fetchPostsTags( {tagname} ));
     dispatch(fetchTags());
     dispatch(fetchComments());
+    dispatch(fetchCategories());
   }, []);
 
   return (
@@ -53,7 +55,7 @@ export const TagPost = () => {
             )}
           </Grid>
           <Grid xs={4} item>
-            <TagsBlock items={tags.items} isLoading={isTagsLoading} />
+            <SubForumBlock items={categories.items} isLoading={isTagsLoading} />
             <CommentsBlock items={comments.items} isLoading={isCommentsLoading} />
           </Grid>
         </Grid>

@@ -9,6 +9,7 @@ import { registerValidation, loginValidation, postCreateValidation } from './val
 import { handleValidationErrors, checkAuth } from './utils/index.js';
 import { UserController, PostController, CommentController,CategoryController,RoleController } from './controllers/index.js';
 import {CreateRole} from "./controllers/RoleController.js";
+import {getPostsWithAndWithoutTag} from "./controllers/PostController.js";
 
 mongoose
   .connect( 'mongodb+srv://admin:admin@cluster0.klivmmt.mongodb.net/blog?retryWrites=true&w=majority')
@@ -52,6 +53,7 @@ app.get('/categories', CategoryController.getAllCategories);
 app.get('/tags/:tagname',PostController.getPostsWithTag)
 
 app.get('/search/:id',PostController.getOneByName)
+app.get('/hide/:first/:second',PostController.getPostsWithAndWithoutTag)
 
 app.get('/comments', CommentController.getAllComments);
 app.get('/comments/:id', CommentController.getOneComment);

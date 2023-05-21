@@ -237,3 +237,27 @@ export const getPostsWithTag = async (req,res) =>{
     });
   }
 }
+
+
+
+
+export const getPostsWithAndWithoutTag = async (req, res) => {
+  const first = req.params.first;
+  const second = req.params.second;
+  try {
+    const posts = await PostModel.find({
+      $and: [
+        { tags: first },
+        { tags: { $ne: second } }
+      ]
+    }).populate('user').exec();
+    res.json(posts);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({
+      message: 'Не удалось получить статьи по тегу',
+    });
+  }
+}
+
+
