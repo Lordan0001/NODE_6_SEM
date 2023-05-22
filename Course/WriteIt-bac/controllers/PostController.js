@@ -180,6 +180,7 @@ export const create = async (req, res) => {
       imageUrl: req.body.imageUrl,
       tags: req.body.tags.split(','),
       user: req.userId,
+      likes: req.userId
     });
 
     const post = await doc.save();
@@ -220,6 +221,34 @@ export const update = async (req, res) => {
     });
   }
 };
+
+export const likePost = async (req, res) => {
+  try {
+    const postId = req.params.id;
+
+    await PostModel.updateOne(
+        {
+          _id: postId,
+        },
+        {
+          likes: req.userId,
+
+        },
+    );
+
+    res.json({
+      success: true,
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({
+      message: 'Не удалось обновить статью',
+    });
+  }
+};
+
+
+
 
 export const getPostsWithTag = async (req,res) =>{
   const tagToSearch = req.params.tagname;

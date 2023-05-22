@@ -5,6 +5,9 @@ import axios from '../axios';
 import '../components/AddComment/CommentStyle.css';
 import { Post } from '../components/Post';
 import { CommentsBlock } from '../components/CommentsBlock';
+import { selectIsAuth } from '../redux/slices/auth';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchCurrentLikes } from '../redux/slices/posts';
 
 export const FullPost = () => {
     const [data, setData] = React.useState();
@@ -12,6 +15,12 @@ export const FullPost = () => {
     const [comments, setComments] = React.useState([]);
     const { id } = useParams();
     const [commentText, setCommentText] = React.useState('');
+    const isAuth = useSelector(selectIsAuth);
+    const dispatch = useDispatch();
+   //const {likes} = useSelector((state) => state.posts);
+    const [likes, setLikes] = React.useState('');
+
+
 
     React.useEffect(() => {
         axios
@@ -34,7 +43,18 @@ export const FullPost = () => {
                 console.warn(err);
                 alert('Ошибка при получении комментариев');
             });
-    }, [id]);
+
+        axios.get(`/like/${id}`)
+            .then(data => {
+                console.log(data)
+                setLikes(data.data.likesCount)
+            })
+            .catch((err) => {
+                console.warn(err);
+                alert('Ошибка при получении лайков');
+            });
+
+    }, [id, dispatch ]);
 
     const handleCommentSubmit = (event) => {
         event.preventDefault();
@@ -49,7 +69,7 @@ export const FullPost = () => {
             .then((res) => {
                 setComments([...comments, res.data]);
                 setCommentText('');
-                setTimeout(() => window.location.reload(), 1500);//mb cringe
+                setTimeout(() => window.location.reload(), 1500); // Может вызывать дискомфорт
             })
             .catch((err) => {
                 console.warn(err);
@@ -60,7 +80,7 @@ export const FullPost = () => {
     if (isLoading) {
         return <Post isLoading={isLoading} isFullPost />;
     }
-
+console.log(likes)
     return (
         <>
             <Post
@@ -71,22 +91,30 @@ export const FullPost = () => {
                 createdAt={data.createdAt}
                 viewsCount={data.viewsCount}
                 commentsCount={comments.length}
+                likes={likes} // PROBLEM HERE
+
                 tags={data.tags}
-                isFullPost>
+                isFullPost
+            >
                 <ReactMarkdown children={data.text} />
             </Post>
             <CommentsBlock items={comments} isLoading={false}>
-                <form onSubmit={handleCommentSubmit}>
-                    <input
-                        type="text"
-                        value={commentText}
-                        onChange={(event) => setCommentText(event.target.value)}
-                        placeholder="Write Something..."
-                    />
-                    <button type="submit">Send</button>
-                </form>
+                {isAuth ? (
+                    <>
+                        <form onSubmit={handleCommentSubmit}>
+                            <input
+                                type="text"
+                                value={commentText}
+                                onChange={(event) => setCommentText(event.target.value)}
+                                placeholder="Write Something..."
+                            />
+                            <button type="submit">Send</button>
+                        </form>
+                    </>
+                ) : (
+                    <></>
+                )}
             </CommentsBlock>
-
         </>
     );
 };

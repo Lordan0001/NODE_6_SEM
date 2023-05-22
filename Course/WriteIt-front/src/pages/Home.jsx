@@ -1,16 +1,9 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Grid from '@mui/material/Grid';
-//import {soket} from '../../../WriteIt-bac/socket'
-//import { soket } from '../../../WriteIt-bac/index'
-
-import { Post,SubForumBlock,CommentsBlock,UserBlock } from '../components';
-import { TagsBlock } from '../components/TagsBlock';
-//import { SubForumBlock } from '../components';
-//import { CommentsBlock } from '../components';
+import { Post,SubForumBlock,CommentsBlock } from '../components';
 import {fetchComments, fetchPosts, fetchTags,fetchCategories} from '../redux/slices/posts';
-//import {UserBlock} from "../components";
-//import { w3cwebsocket as WebSocket } from 'websocket';
+
 
 export const Home = () => {
   const dispatch = useDispatch();
@@ -44,7 +37,7 @@ export const Home = () => {
                 user={obj.user}
                 createdAt={obj.createdAt}
                 viewsCount={obj.viewsCount}
-                commentsCount={comments.count}//problem here
+                commentsCount={comments.items.length}//problem here
                 tags={obj.tags}
                 isEditable={userData?._id === obj.user._id || userData?.role === 'admin' }
               />

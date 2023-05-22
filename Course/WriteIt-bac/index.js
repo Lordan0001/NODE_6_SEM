@@ -7,9 +7,8 @@ import mongoose from 'mongoose';
 
 import { registerValidation, loginValidation, postCreateValidation } from './validations.js';
 import { handleValidationErrors, checkAuth } from './utils/index.js';
-import { UserController, PostController, CommentController,CategoryController,RoleController } from './controllers/index.js';
+import { UserController, PostController, CommentController,CategoryController,RoleController,LikeController } from './controllers/index.js';
 import {CreateRole} from "./controllers/RoleController.js";
-import {getPostsWithAndWithoutTag} from "./controllers/PostController.js";
 
 mongoose
   .connect( 'mongodb+srv://admin:admin@cluster0.klivmmt.mongodb.net/blog?retryWrites=true&w=majority')
@@ -45,7 +44,8 @@ app.post('/upload', checkAuth, upload.single('image'), (req, res) => {
     url: `/uploads/${req.file.originalname}`,
   });
 });
-
+app.get('/like',LikeController.getAllLikes)
+app.get('/like/:id',LikeController.getCurrentLikes)
 app.get('/tags', PostController.getLastTags);
 app.get('/subforum/:tagfilter',PostController.tagsGroupByOneTag); //new
 app.get('/categories', CategoryController.getAllCategories);
@@ -64,7 +64,8 @@ app.get('/posts/:id', PostController.getOne);
 
 app.post('/posts', checkAuth, postCreateValidation, handleValidationErrors, PostController.create);
 app.post('/comments',checkAuth, CommentController.createComments);
-app.post('/categories', CategoryController.createCategory);   CreateRole
+app.post('/like',checkAuth, LikeController.createLike);
+app.post('/categories', CategoryController.createCategory);
 app.post('/roles', RoleController.CreateRole);
 app.delete('/posts/:id', checkAuth, PostController.remove);
 app.delete('/comments/:id', checkAuth, CommentController.removeComment);

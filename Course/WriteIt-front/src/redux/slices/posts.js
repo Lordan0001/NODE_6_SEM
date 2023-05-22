@@ -6,6 +6,14 @@ export const fetchPosts = createAsyncThunk('posts/fetchPosts', async () => {
   return data;
 });
 
+export const fetchAddLike = createAsyncThunk('posts/fetchAddPost', async ({postId}) => {
+  console.log('fetch' + postId )
+  const { data } = await axios.post('/like',postId);
+
+  return data;
+});
+
+
 export const fetchCategories = createAsyncThunk('posts/fetchCategories', async () => {
   const { data } = await axios.get('/categories');
   return data;
@@ -51,7 +59,10 @@ export const fetchTags = createAsyncThunk('posts/fetchTags', async () => {
 });
 
 
-
+export const fetchCurrentLikes = createAsyncThunk('posts/fetchCurrentLikes', async ({id}) =>{
+const { data } =  axios.get(`/like/${id}`)
+    return data;
+});
 
 export const fetchRemovePost = createAsyncThunk('posts/fetchRemovePost', async (id) =>
   axios.delete(`/posts/${id}`),
@@ -74,12 +85,18 @@ const initialState = {
     items: [],
     status: 'loading',
   },
+  likes: {
+    items: [],
+    status: 'loading',
+  },
 };
 
 const postsSlice = createSlice({
   name: 'posts',
   initialState,
-  reducers: {},
+  reducers: {
+
+  },
   extraReducers: {
     // Получение статей
     [fetchPosts.pending]: (state) => {
@@ -146,6 +163,32 @@ const postsSlice = createSlice({
     [fetchPostsWithTagAndWithout.rejected]: (state) => {
       state.posts.items = [];
       state.posts.status = 'error';
+    },
+    // добавить лайк
+    [fetchAddLike.pending]: (state) => {
+      state.likes.items = [];
+      state.likes.status = 'loading';
+    },
+    [fetchAddLike.fulfilled]: (state, action) => {
+      state.likes.items = action.payload;
+      state.likes.status = 'loaded';
+    },
+    [fetchAddLike.rejected]: (state) => {
+      state.likes.items = [];
+      state.likes.status = 'error';
+    },
+    //получить лайки к посту
+    [fetchCurrentLikes.pending]: (state) => {
+      state.likes.items = [];
+      state.likes.status = 'loading';
+    },
+    [fetchCurrentLikes.fulfilled]: (state, action) => {
+      state.likes.items = action.payload;
+      state.likes.status = 'loaded';
+    },
+    [fetchCurrentLikes.rejected]: (state) => {
+      state.likes.items = [];
+      state.likes.status = 'error';
     },
     // Получение тегов
     [fetchTags.pending]: (state) => {
