@@ -16,6 +16,7 @@ export const Home = () => {
   const isCommentsLoading = comments.status === 'loading';
   const isCategoriesLoading = categories.status === 'loading';
   const [likes, setLikes] = React.useState('');
+  const [commentsCount, setComments] = React.useState('');
 
   React.useEffect(() => {
     dispatch(fetchPosts());
@@ -35,8 +36,9 @@ export const Home = () => {
 
 
 
-  }, []);
 
+  }, []);
+console.log(comments);
   return (
     <>
       <Grid container spacing={4}>
@@ -47,12 +49,13 @@ export const Home = () => {
             ) : (
               <Post
                 id={obj._id}
+
                 title={obj.title}
                 imageUrl={`https://localhost:4444${obj.imageUrl}`}
                 user={obj.user}
                 createdAt={obj.createdAt}
                 viewsCount={obj.viewsCount}
-                commentsCount={comments.items.length}//problem here
+                commentsCount={comments.items.filter(com=>com.post=== obj._id).length}//problem here
 
 
 

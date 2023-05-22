@@ -91,8 +91,7 @@ console.log(likes)
                 createdAt={data.createdAt}
                 viewsCount={data.viewsCount}
                 commentsCount={comments.length}
-                likes={likes} // PROBLEM HERE
-
+                likes={likes}
                 tags={data.tags}
                 isFullPost
             >
