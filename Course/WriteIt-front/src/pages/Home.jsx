@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Grid from '@mui/material/Grid';
 import { Post,SubForumBlock,CommentsBlock } from '../components';
 import {fetchComments, fetchPosts, fetchTags,fetchCategories} from '../redux/slices/posts';
+import axios from "../axios";
 
 
 export const Home = () => {
@@ -14,12 +15,26 @@ export const Home = () => {
   const isTagsLoading = tags.status === 'loading';
   const isCommentsLoading = comments.status === 'loading';
   const isCategoriesLoading = categories.status === 'loading';
+  const [likes, setLikes] = React.useState('');
 
   React.useEffect(() => {
     dispatch(fetchPosts());
     dispatch(fetchTags());
     dispatch(fetchComments());
     dispatch(fetchCategories());
+
+    // axios.get(`/like/${id}`)
+    //     .then(data => {
+    //       console.log(data)
+    //       setLikes(data.data.likesCount)
+    //     })
+    //     .catch((err) => {
+    //       console.warn(err);
+    //       alert('Ошибка при получении лайков');
+    //     });
+
+
+
   }, []);
 
   return (
@@ -38,6 +53,10 @@ export const Home = () => {
                 createdAt={obj.createdAt}
                 viewsCount={obj.viewsCount}
                 commentsCount={comments.items.length}//problem here
+
+
+
+              //  likes={likes}
                 tags={obj.tags}
                 isEditable={userData?._id === obj.user._id || userData?.role === 'admin' }
               />

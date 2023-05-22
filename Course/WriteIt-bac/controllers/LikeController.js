@@ -15,21 +15,32 @@ export const getAllLikes = async (req, res) => {
 
 export const createLike = async (req, res) => {
   try {
+    const { userId, body: { postId } } = req;
+
+    // Check if the like already exists in the database
+    const existingLike = await LikeModel.findOne({ user: userId, post: postId });
+    if (existingLike) {
+      // If the like already exists, remove it from the database and return a response
+      await existingLike.remove();
+      return res.json({ message: 'Like removed' });
+    }
+
     const doc = new LikeModel({
-      user: req.userId,
-      post: req.body.postId
+      user: userId,
+      post: postId
     });
 
-    const comment = await doc.save();
+    const like = await doc.save();
 
-    res.json(comment);
+    res.json(like);
   } catch (err) {
     console.log(err);
     res.status(500).json({
-      message: 'Не лайкнуть',
+      message: 'Unable to like',
     });
   }
 };
+
 
 
 
