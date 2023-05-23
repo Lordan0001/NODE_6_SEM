@@ -8,6 +8,7 @@ export const UserInfo = ({ avatarUrl, fullName, additionalText }) => {
       <div className={styles.userDetails}>
         <span className={styles.userName}>{fullName}</span>
         <span className={styles.additional}>{additionalText}</span>
+          <button className={styles.subscribeButton}>Subscribe</button>
       </div>
     </div>
   );

@@ -35,15 +35,10 @@ app.use(express.json());
 app.use(cors());
 app.use('/uploads', express.static('uploads'));
 
-app.post('/auth/login', loginValidation, handleValidationErrors, UserController.login);
-app.post('/auth/register', registerValidation, handleValidationErrors, UserController.register);
+
 app.get('/auth/me', checkAuth, UserController.getMe);
 
-app.post('/upload', checkAuth, upload.single('image'), (req, res) => {
-  res.json({
-    url: `/uploads/${req.file.originalname}`,
-  });
-});
+
 app.get('/like',LikeController.getAllLikes)
 app.get('/like/:id',LikeController.getCurrentLikes)
 app.get('/tags', PostController.getLastTags);
@@ -67,14 +62,19 @@ app.post('/comments',checkAuth, CommentController.createComments);
 app.post('/like',checkAuth, LikeController.createLike);
 app.post('/categories', CategoryController.createCategory);
 app.post('/roles', RoleController.CreateRole);
+app.post('/auth/login', loginValidation, handleValidationErrors, UserController.login);
+app.post('/auth/register', registerValidation, handleValidationErrors, UserController.register);
+app.post('/upload', checkAuth, upload.single('image'), (req, res) => {
+  res.json({url: `/uploads/${req.file.originalname}`,});
+});
+
+
 app.delete('/posts/:id', checkAuth, PostController.remove);
 app.delete('/comments/:id', checkAuth, CommentController.removeComment);
-app.patch(
-  '/posts/:id', checkAuth, postCreateValidation, handleValidationErrors, PostController.update,
-);
-app.patch(
-    '/comments/:id', checkAuth, CommentController.updateComment,
-);
+
+app.patch('/posts/:id', checkAuth, postCreateValidation, handleValidationErrors, PostController.update,);
+app.patch('/comments/:id', checkAuth, CommentController.updateComment,);
+app.patch('/subscribe', checkAuth, UserController.Subscribe);
 
 
 const server = https.createServer({
@@ -90,8 +90,3 @@ server.listen(process.env.PORT || 4444, (err) => {
   console.log('Server OK');
 });
 
-// server.on('upgrade', (req, socket, head) => {
-//   wss.handleUpgrade(req, socket, head, (ws) => {
-//     wss.emit('connection', ws, req);
-//   });
-// });

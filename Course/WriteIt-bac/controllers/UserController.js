@@ -104,3 +104,39 @@ export const getMe = async (req, res) => {
     });
   }
 };
+
+export const Subscribe = async (req, res) => {
+  try {
+    const ownerId = req.body.ownerId;
+    const subToId = req.body.subToId;
+
+    const user = await UserModel.findById(ownerId);
+
+    if (!user) {
+      return res.status(404).json({
+        message: 'User not found',
+      });
+    }
+    const exists = user.subscribedTo.includes(subToId);
+
+    if (!exists) {
+      user.subscribedTo.addToSet(subToId);
+      await user.save();
+    }
+    if(exists){
+      user.subscribedTo.remove(subToId);
+      await user.save();
+      return     res.status(200).json({
+        message: 'Отписался',
+      });
+    }
+
+    res.status(200).json({
+      message: 'Подписался',
+    });
+  } catch (err) {
+    res.status(500).json({
+      message: 'Не подписался',
+    });
+  }
+};
