@@ -1,6 +1,4 @@
 import RoleModel from '../models/Role.js';
-import CommentModel from "../models/Comment.js";
-
 
 export const getAllRoles = async (req, res) => {
   try {

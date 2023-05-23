@@ -1,6 +1,5 @@
 import PostModel from '../models/Post.js';
 
-
 export const tagsGroupByOneTag = async (req, res) => {
   const tagFilter = req.params.tagfilter;
   try {
@@ -68,8 +67,6 @@ export const getOneByName = async (req, res) => {
         message: 'Статья не найдена',
       });
     }
-
-    //const secondTag = posts[0].tags[1]; // Assuming tags is an array
 
     res.json(posts);
   } catch (err) {
@@ -247,9 +244,6 @@ export const likePost = async (req, res) => {
   }
 };
 
-
-
-
 export const getPostsWithTag = async (req,res) =>{
   const tagToSearch = req.params.tagname;
   try {
@@ -266,9 +260,6 @@ export const getPostsWithTag = async (req,res) =>{
     });
   }
 }
-
-
-
 
 export const getPostsWithAndWithoutTag = async (req, res) => {
   const first = req.params.first;

@@ -1,6 +1,4 @@
 import CategoryModel from '../models/Category.js';
-import CommentModel from "../models/Comment.js";
-
 
 export const getAllCategories = async (req, res) => {
   try {

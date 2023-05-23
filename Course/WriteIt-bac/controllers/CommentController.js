@@ -1,5 +1,4 @@
 import CommentModel from '../models/Comment.js';
-import Comment from "../models/Comment.js";
 
 export const getAllComments = async (req, res) => {
   try {
@@ -31,8 +30,6 @@ export const createComments = async (req, res) => {
     });
   }
 };
-
-
 
 export const getOneComment = async (req, res) => {
   try {

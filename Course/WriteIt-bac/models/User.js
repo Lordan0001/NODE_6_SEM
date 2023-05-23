@@ -1,5 +1,4 @@
 import mongoose from 'mongoose';
-import role from "./Role.js";
 
 const UserSchema = new mongoose.Schema(
   {
