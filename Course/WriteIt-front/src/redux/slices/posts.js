@@ -64,6 +64,11 @@ const { data } =  axios.get(`/like/${id}`)
     return data;
 });
 
+export const fetchAllLikes = createAsyncThunk('posts/fetchAllLikes', async () =>{
+  const { data } =  axios.get(`/like`)
+  return data;
+});
+
 export const fetchRemovePost = createAsyncThunk('posts/fetchRemovePost', async (id) =>
   axios.delete(`/posts/${id}`),
 );
@@ -187,6 +192,19 @@ const postsSlice = createSlice({
       state.likes.status = 'loaded';
     },
     [fetchCurrentLikes.rejected]: (state) => {
+      state.likes.items = [];
+      state.likes.status = 'error';
+    },
+    //получить все лайки fetchAllLikes
+    [fetchAllLikes.pending]: (state) => {
+      state.likes.items = [];
+      state.likes.status = 'loading';
+    },
+    [fetchAllLikes.fulfilled]: (state, action) => {
+      state.likes.items = action.payload;
+      state.likes.status = 'loaded';
+    },
+    [fetchAllLikes.rejected]: (state) => {
       state.likes.items = [];
       state.likes.status = 'error';
     },
