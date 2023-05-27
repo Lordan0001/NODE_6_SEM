@@ -50,6 +50,7 @@ app.get('/tags/:tagname',PostController.getPostsWithTag)
 app.get('/subforum/:tagfilter',PostController.tagsGroupByOneTag);
 app.get('/search/:id',PostController.getOneByName);
 app.get('/hide/:first/:second',PostController.getPostsWithAndWithoutTag);
+app.get('/subscribe/:id',UserController.getSubscribersFromUser)
 
 app.post('/auth/login', loginValidation, handleValidationErrors, UserController.login);
 app.post('/auth/register', registerValidation, handleValidationErrors, UserController.register);

@@ -2,6 +2,7 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 
 import UserModel from '../models/User.js';
+import User from "../models/User.js";
 
 export const register = async (req, res) => {
   try {
@@ -137,6 +138,18 @@ export const Subscribe = async (req, res) => {
   } catch (err) {
     res.status(500).json({
       message: 'Не подписался',
+    });
+  }
+};
+
+export const getSubscribersFromUser = async (req, res) => {
+  const ownerId = req.params.id;
+  try {
+    const user = await UserModel.findById(ownerId);
+    res.json(user.subscribedTo);
+  } catch (err) {
+    res.status(500).json({
+      message: 'Failed to retrieve the list of subscribed users.',
     });
   }
 };
