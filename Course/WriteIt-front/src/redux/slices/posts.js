@@ -73,7 +73,27 @@ export const fetchRemovePost = createAsyncThunk('posts/fetchRemovePost', async (
   axios.delete(`/posts/${id}`),
 );
 
+export const fetchSubscribe = createAsyncThunk('buttons/fetchSubscribe', async (requestBody) => {
+  // const requestBody = {
+  //   ownerId: userId,
+  //   subToId: postOwnerId
+  // };
+
+  try {
+    const response = await axios.patch('/subscribe', requestBody);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+});
+
+
 const initialState = {
+  buttons: {
+    items: [],
+    status: 'loading',
+  },
   posts: {
     items: [],
     status: 'loading',
@@ -103,6 +123,19 @@ const postsSlice = createSlice({
 
   },
   extraReducers: {
+    //кнопки
+    [fetchSubscribe.pending]: (state) => {
+      state.buttons.items = [];
+      state.buttons.status = 'loading';
+    },
+    [fetchSubscribe.fulfilled]: (state, action) => {
+      state.buttons.items = action.payload;
+      state.buttons.status = 'loaded';
+    },
+    [fetchSubscribe.rejected]: (state) => {
+      state.buttons.items = [];
+      state.buttons.status = 'error';
+    },
     // Получение статей
     [fetchPosts.pending]: (state) => {
       state.posts.items = [];

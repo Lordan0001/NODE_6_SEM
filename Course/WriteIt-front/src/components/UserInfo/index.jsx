@@ -3,7 +3,8 @@ import { useDispatch } from 'react-redux';
 import axios from 'axios';
 import styles from './UserInfo.module.scss';
 import { fetchAuthMe } from '../../redux/slices/auth';
-//TODO добавить action на Subscribe/Unsubsribe
+import { fetchSubscribe } from "../../redux/slices/posts";
+
 export const UserInfo = ({ avatarUrl, fullName, additionalText, _id }) => {
     const dispatch = useDispatch();
     const postOwnerId = _id;
@@ -32,6 +33,21 @@ export const UserInfo = ({ avatarUrl, fullName, additionalText, _id }) => {
     const buttonClassName = subscribed ? styles.unsubscribeButton : styles.subscribeButton;
     const buttonText = subscribed ? 'Unsubscribe' : 'Subscribe';
 
+    const handleSubscribe = async () => {
+        try {
+            const requestBody = {
+                ownerId: userId,
+                subToId: postOwnerId
+            };
+            console.log('-----check');
+            console.log(requestBody);
+            await dispatch(fetchSubscribe(requestBody));
+            setSubscribed(!subscribed);
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
     return (
         <div className={styles.root}>
             <img className={styles.avatar} src={avatarUrl || '/noavatar.png'} alt={fullName} />
@@ -39,7 +55,9 @@ export const UserInfo = ({ avatarUrl, fullName, additionalText, _id }) => {
                 <span className={styles.userName}>{fullName}</span>
                 <span className={styles.additional}>{additionalText}</span>
                 {postOwnerId !== userId && (
-                    <button className={buttonClassName}>{buttonText}</button>
+                    <button className={buttonClassName} onClick={handleSubscribe}>
+                        {buttonText}
+                    </button>
                 )}
             </div>
         </div>
