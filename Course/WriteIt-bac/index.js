@@ -40,6 +40,7 @@ app.get('/posts', PostController.getAll);
 app.get('/post/popular', PostController.getAllPopular);
 app.get('/posts/tags', PostController.getLastTags);
 app.get('/posts/:id', PostController.getOne);
+app.get('/subs/:_id',PostController.getPostsBySubs)
 app.get('/categories', CategoryController.getAllCategories);
 app.get('/like',LikeController.getAllLikes);
 app.get('/like/:id',LikeController.getCurrentLikes);

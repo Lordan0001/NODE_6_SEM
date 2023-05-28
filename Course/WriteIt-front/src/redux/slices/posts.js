@@ -7,9 +7,13 @@ export const fetchPosts = createAsyncThunk('posts/fetchPosts', async () => {
 });
 
 export const fetchAddLike = createAsyncThunk('posts/fetchAddPost', async ({postId}) => {
-  console.log('fetch' + postId )
   const { data } = await axios.post('/like',postId);
+  return data;
+});
 
+export const fetchSubsPosts = createAsyncThunk('fetchSubsPosts', async ({userId}) => {
+  console.log({userId});
+  const { data } = await axios.get(`/subs/${userId}`);
   return data;
 });
 
@@ -146,6 +150,18 @@ const postsSlice = createSlice({
       state.posts.status = 'loaded';
     },
     [fetchPosts.rejected]: (state) => {
+      state.posts.items = [];
+      state.posts.status = 'error';
+    },//посты по сабам
+    [fetchSubsPosts.pending]: (state) => {
+      state.posts.items = [];
+      state.posts.status = 'loading';
+    },
+    [fetchSubsPosts.fulfilled]: (state, action) => {
+      state.posts.items = action.payload;
+      state.posts.status = 'loaded';
+    },
+    [fetchSubsPosts.rejected]: (state) => {
       state.posts.items = [];
       state.posts.status = 'error';
     },

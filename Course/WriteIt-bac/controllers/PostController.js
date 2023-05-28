@@ -1,5 +1,5 @@
 import PostModel from '../models/Post.js';
-
+import UserModel from '../models/User.js';
 export const tagsGroupByOneTag = async (req, res) => {
   const tagFilter = req.params.tagfilter;
   try {
@@ -30,7 +30,6 @@ export const getLastTags = async (req, res) => {
     const tags = posts
       .map((obj) => obj.tags)
       .flat()
-      // .slice(0, 5);
 
     res.json(tags);
   } catch (err) {
@@ -53,9 +52,30 @@ export const getAll = async (req, res) => {
   }
 };
 
+export const getPostsBySubs = async (req, res) => {
+  try {
+    const user = await UserModel.findById(req.params._id);
+    if (!user) {
+      return res.status(404).json({ message: 'Пользователь не найден' });
+    }
+    const subscribedTo = user.subscribedTo;
+    const postsWithId = await PostModel.find({
+      user: { $in: subscribedTo }
+    }).populate('user').exec();
+
+    res.json(postsWithId);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({
+      message: 'Не удалось получить статьи',
+    });
+  }
+};
+
+
 export const getOneByName = async (req, res) => {
   const nameSearch = req.params.id;
-  const regex = new RegExp(nameSearch, 'i'); // Case-insensitive regex
+  const regex = new RegExp(nameSearch, 'i');
 
   try {
     const posts = await PostModel.find({

@@ -39,8 +39,6 @@ export const UserInfo = ({ avatarUrl, fullName, additionalText, _id }) => {
                 ownerId: userId,
                 subToId: postOwnerId
             };
-            console.log('-----check');
-            console.log(requestBody);
             await dispatch(fetchSubscribe(requestBody));
             setSubscribed(!subscribed);
         } catch (error) {

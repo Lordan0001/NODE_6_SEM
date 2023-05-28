@@ -1,9 +1,20 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Grid from '@mui/material/Grid';
 import { Post, SubForumBlock, CommentsBlock } from '../components';
-import { fetchComments, fetchPosts, fetchTags, fetchCategories, fetchAllLikes } from '../redux/slices/posts';
+import {
+  fetchComments,
+  fetchPosts,
+  fetchTags,
+  fetchCategories,
+  fetchAllLikes,
+  fetchSubsPosts
+} from '../redux/slices/posts';
 import axios from "../axios";
+import { fetchAuthMe } from '../redux/slices/auth';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+
 
 export const Home = () => {
   const dispatch = useDispatch();
@@ -14,24 +25,39 @@ export const Home = () => {
   const isTagsLoading = tags.status === 'loading';
   const isCommentsLoading = comments.status === 'loading';
   const isCategoriesLoading = categories.status === 'loading';
-  const [likes, setLikes] = React.useState([]);
+  const [likes, setLikes] = useState([]);
+  const [userId, setUserId] = useState(null);
+  const [activeTab, setActiveTab] = useState(0);
 
-  React.useEffect(() => {
-    dispatch(fetchPosts());
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await dispatch(fetchAuthMe());
+      const id = data.payload._id;
+      setUserId(id);
+    };
+
+    fetchData();
     dispatch(fetchTags());
     dispatch(fetchComments());
     dispatch(fetchCategories());
     dispatch(fetchAllLikes());
 
-    axios.get(`/like`)
-        .then(data => {
+    if (activeTab === 0) {
+      dispatch(fetchPosts());
+    } else if (activeTab === 1 && userId) {
+      dispatch(fetchSubsPosts({ userId }));
+    }
+
+    axios
+        .get(`/like`)
+        .then((data) => {
           setLikes(data.data);
         })
         .catch((err) => {
           console.warn(err);
           alert('Ошибка при получении лайков');
         });
-  }, []);
+  }, [dispatch, activeTab, userId]);
 
   const getLikesCount = (postId) => {
     return likes.filter((like) => like.post === postId).length;
@@ -39,6 +65,15 @@ export const Home = () => {
 
   return (
       <>
+        <Tabs
+            style={{ marginBottom: 15 }}
+            value={activeTab}
+            onChange={(event, newValue) => setActiveTab(newValue)}
+            aria-label="basic tabs example"
+        >
+          <Tab label="All" />
+          <Tab label="Subscriptions" />
+        </Tabs>
         <Grid container spacing={4}>
           <Grid xs={8} item>
             {(isPostsLoading ? [...Array(5)] : posts.items).map((obj, index) =>
@@ -52,7 +87,7 @@ export const Home = () => {
                         user={obj.user}
                         createdAt={obj.createdAt}
                         viewsCount={obj.viewsCount}
-                        commentsCount={comments.items.filter(com => com.post === obj._id).length}
+                        commentsCount={comments.items.filter((com) => com.post === obj._id).length}
                         likes={getLikesCount(obj._id)}
                         tags={obj.tags}
                         isEditable={userData?._id === obj.user._id || userData?.role === 'admin'}
