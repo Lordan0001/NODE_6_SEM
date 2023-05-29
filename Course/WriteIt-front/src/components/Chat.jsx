@@ -7,11 +7,17 @@ import Divider from "@mui/material/Divider";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import io from "socket.io-client";
+import axios from "axios";
+import { useSelector } from "react-redux";
+import { selectIsAuth } from "../redux/slices/auth";
 
 export const Chat = () => {
     const [chatMessages, setChatMessages] = useState([]);
     const [newMessage, setNewMessage] = useState("");
     const [socket, setSocket] = useState(null);
+    const [userFullName, setUserFullName] = useState("");
+    const [userAvatarUrl, setUserAvatarUrl] = useState("");
+    const isAuth = useSelector(selectIsAuth);
 
     useEffect(() => {
         const newSocket = io("https://localhost:4444");
@@ -22,18 +28,44 @@ export const Chat = () => {
             setChatMessages((prevMessages) => [...prevMessages, message]);
         });
 
+        fetchUserInformation();
+
         return () => {
             // Clean up the socket connection
             newSocket.disconnect();
         };
     }, []);
 
+    const fetchUserInformation = async () => {
+        try {
+            const token = localStorage.getItem("token");
+
+            if (!token) {
+                console.log("Token not found in localStorage");
+                return;
+            }
+
+            const response = await axios.get("https://localhost:4444/auth/me", {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+
+            const { fullName, avatarUrl } = response.data;
+            setUserFullName(fullName);
+            setUserAvatarUrl(avatarUrl);
+        } catch (error) {
+            console.log("Error fetching user information:", error);
+        }
+    };
+
     const handleSendMessage = () => {
         if (newMessage.trim() !== "") {
             const messageData = {
-                username: "Your Username", // Replace with the actual username
+                username: userFullName,
                 message: newMessage,
-                timestamp: new Date().toLocaleTimeString() // Add timestamp
+                timestamp: new Date().toLocaleTimeString(),
+                avatarUrl: userAvatarUrl,
             };
             socket.emit("chatMessage", messageData);
             setNewMessage("");
@@ -46,24 +78,61 @@ export const Chat = () => {
                 {chatMessages.map((message, index) => (
                     <React.Fragment key={index}>
                         <ListItem>
+                            {message.avatarUrl && (
+                                <img
+                                    src={message.avatarUrl}
+                                    alt={message.username}
+                                    style={{
+                                        width: "40px",
+                                        height: "40px",
+                                        borderRadius: "50%",
+                                        marginRight: "5px",
+                                    }}
+                                />
+                            )}
                             <ListItemText
-                                primary={message.message}
-                                secondary={`By: ${message.username} - ${message.timestamp}`}
+                                primary={
+                                    <React.Fragment>
+                                        <div
+                                            style={{
+                                                display: "flex",
+                                                alignItems: "center",
+                                                marginBottom: "5px",
+                                            }}
+                                        >
+                      <span
+                          style={{
+                              fontWeight: "bold",
+                              marginRight: "5px",
+                          }}
+                      >
+                        {message.username}
+                      </span>
+                                            <span>{message.timestamp}</span>
+                                        </div>
+                                        <div>{message.message}</div>
+                                    </React.Fragment>
+                                }
                             />
                         </ListItem>
                         <Divider variant="inset" component="li" />
                     </React.Fragment>
                 ))}
             </List>
-            <TextField
-                label="New Message"
-                value={newMessage}
-                onChange={(e) => setNewMessage(e.target.value)}
-                fullWidth
-            />
-            <Button variant="contained" onClick={handleSendMessage}>
-                Send
-            </Button>
+
+            {isAuth ? (
+                <>
+                    <TextField
+                        label="New Message"
+                        value={newMessage}
+                        onChange={(e) => setNewMessage(e.target.value)}
+                        fullWidth
+                    />
+                    <Button variant="contained" onClick={handleSendMessage}>
+                        Send
+                    </Button>
+                </>
+            ) : null}
         </SideBlock>
     );
 };
