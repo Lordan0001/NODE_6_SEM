@@ -13,7 +13,7 @@ import styles from './Post.module.scss';
 import { UserInfo } from '../UserInfo';
 import { PostSkeleton } from './Skeleton';
 import {fetchAddLike, fetchRemovePost} from '../../redux/slices/posts';
-import { HeartBroken } from '@mui/icons-material';
+import  FavoriteIcon   from "@mui/icons-material/Favorite";
 import {selectIsAuth} from "../../redux/slices/auth";
 
 export const Post = ({
@@ -102,7 +102,7 @@ export const Post = ({
                             <span>{commentsCount}</span>
                         </li>
                         <li>
-                            <HeartBroken onClick={handleLikeClick} />
+                            <FavoriteIcon  onClick={handleLikeClick} />
                             <span>{likes}</span>
                         </li>
                             </>):(<></>

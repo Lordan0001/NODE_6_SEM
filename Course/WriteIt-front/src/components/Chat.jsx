@@ -29,6 +29,7 @@ export const Chat = () => {
         });
 
         fetchUserInformation();
+        fetchChatMessages();
 
         return () => {
             // Clean up the socket connection
@@ -59,7 +60,16 @@ export const Chat = () => {
         }
     };
 
-    const handleSendMessage = () => {
+    const fetchChatMessages = async () => {
+        try {
+            const response = await axios.get("https://localhost:4444/message");
+            setChatMessages(response.data);
+        } catch (error) {
+            console.log("Error fetching chat messages:", error);
+        }
+    };
+
+    const handleSendMessage = async () => {
         if (newMessage.trim() !== "") {
             const messageData = {
                 username: userFullName,
@@ -67,7 +77,30 @@ export const Chat = () => {
                 timestamp: new Date().toLocaleTimeString(),
                 avatarUrl: userAvatarUrl,
             };
+
+            // Send message via WebSocket
             socket.emit("chatMessage", messageData);
+
+            try {
+                const token = localStorage.getItem("token");
+
+                if (!token) {
+                    console.log("Token not found in localStorage");
+                    return;
+                }
+
+                const config = {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                };
+
+                // Send message via POST request
+                await axios.post("https://localhost:4444/message", messageData, config);
+            } catch (error) {
+                console.log("Error sending message via POST request:", error);
+            }
+
             setNewMessage("");
         }
     };

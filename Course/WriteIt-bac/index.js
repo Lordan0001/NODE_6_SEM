@@ -8,7 +8,7 @@ import { Server as SocketIOServer } from 'socket.io';
 
 import { registerValidation, loginValidation, postCreateValidation } from './validations.js';
 import { handleValidationErrors, checkAuth } from './utils/index.js';
-import { UserController, PostController, CommentController, CategoryController, RoleController, LikeController } from './controllers/index.js';
+import { UserController, PostController, CommentController, CategoryController, RoleController, LikeController, MessageController } from './controllers/index.js';
 
 mongoose
     .connect('mongodb+srv://admin:admin@cluster0.klivmmt.mongodb.net/blog?retryWrites=true&w=majority')
@@ -99,6 +99,7 @@ app.get('/subforum/:tagfilter', PostController.tagsGroupByOneTag);
 app.get('/search/:id', PostController.getOneByName);
 app.get('/hide/:first/:second', PostController.getPostsWithAndWithoutTag);
 app.get('/subscribe/:id', UserController.getSubscribersFromUser);
+app.get('/message', MessageController.getAllMessages)
 
 app.post('/auth/login', loginValidation, handleValidationErrors, UserController.login);
 app.post('/auth/register', registerValidation, handleValidationErrors, UserController.register);
@@ -110,6 +111,7 @@ app.post('/roles', RoleController.CreateRole);
 app.post('/upload', checkAuth, upload.single('image'), (req, res) => {
   res.json({ url: `/uploads/${req.file.originalname}` });
 });
+app.post('/message',checkAuth, MessageController.addMessage)
 
 app.delete('/posts/:id', checkAuth, PostController.remove);
 app.delete('/comments/:id', checkAuth, CommentController.removeComment);
