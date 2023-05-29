@@ -12,7 +12,6 @@ export const fetchAddLike = createAsyncThunk('posts/fetchAddPost', async ({postI
 });
 
 export const fetchSubsPosts = createAsyncThunk('fetchSubsPosts', async ({userId}) => {
-  console.log({userId});
   const { data } = await axios.get(`/subs/${userId}`);
   return data;
 });

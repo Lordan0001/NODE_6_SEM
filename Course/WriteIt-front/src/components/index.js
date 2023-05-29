@@ -6,5 +6,5 @@ export * from "./SideBlock";
 export * from "./UserInfo";
 export * from "./Header";
 export * from "./SubForumBlock"
-export * from "./UserBlock"
+export * from "./Chat"
 export * from "./HideBlock"

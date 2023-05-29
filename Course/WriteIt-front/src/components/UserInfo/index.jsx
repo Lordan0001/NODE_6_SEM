@@ -21,7 +21,6 @@ export const UserInfo = ({ avatarUrl, fullName, additionalText, _id }) => {
                 const response = await axios.get(`https://localhost:4444/subscribe/${id}`);
                 const responseData = response.data;
                 setSubscribed(responseData.includes(postOwnerId));
-                console.log(responseData);
             } catch (error) {
                 console.error(error);
             }

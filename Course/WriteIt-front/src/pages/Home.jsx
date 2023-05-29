@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Grid from '@mui/material/Grid';
-import { Post, SubForumBlock, CommentsBlock } from '../components';
+import {Post, SubForumBlock, CommentsBlock, Chat} from '../components';
 import {
   fetchComments,
   fetchPosts,
@@ -14,7 +14,7 @@ import axios from "../axios";
 import { fetchAuthMe } from '../redux/slices/auth';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-
+//import { io } from 'socket.io-client'; // Import the io function
 
 export const Home = () => {
   const dispatch = useDispatch();
@@ -57,6 +57,19 @@ export const Home = () => {
           console.warn(err);
           alert('Ошибка при получении лайков');
         });
+
+    // const socket = io('https://localhost:4444'); // Connect to the WebSocket server
+    //
+    // // Add event listeners and handle socket events
+    // socket.on('newPost', (data) => {
+    //   // Handle the 'newPost' event received from the server
+    //   console.log('Received new post:', data);
+    // });
+    //
+    // // Clean up the WebSocket connection when the component unmounts
+    // return () => {
+    //   socket.disconnect();
+    // };
   }, [dispatch, activeTab, userId]);
 
   const getLikesCount = (postId) => {
@@ -98,7 +111,8 @@ export const Home = () => {
           <Grid xs={4} item>
             <SubForumBlock items={categories.items} isLoading={isTagsLoading} />
             <CommentsBlock items={comments.items} isLoading={isCommentsLoading} />
-            {/*<UserBlock items={  comments.items} isLoading= {isCommentsLoading}/>*/}
+          {/*  <Chat items={  comments.items} isLoading= {isCommentsLoading}/>*/}
+            <Chat/>
           </Grid>
         </Grid>
       </>
