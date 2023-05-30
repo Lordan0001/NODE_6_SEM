@@ -17,10 +17,7 @@ export const FullPost = () => {
     const [commentText, setCommentText] = React.useState('');
     const isAuth = useSelector(selectIsAuth);
     const dispatch = useDispatch();
-   //const {likes} = useSelector((state) => state.posts);
     const [likes, setLikes] = React.useState('');
-
-
 
     React.useEffect(() => {
         axios
@@ -44,19 +41,19 @@ export const FullPost = () => {
                 alert('Ошибка при получении комментариев');
             });
 
-        axios.get(`/like/${id}`)
-            .then(data => {
-                console.log(data)
-                setLikes(data.data.likesCount)
+        axios
+            .get(`/like/${id}`)
+            .then((data) => {
+                console.log(data);
+                setLikes(data.data.likesCount);
             })
             .catch((err) => {
                 console.warn(err);
                 alert('Ошибка при получении лайков');
             });
+    }, [id, dispatch]);
 
-    }, [id, dispatch ]);
-
-    const handleCommentSubmit = (event) => {
+    const handleCommentSubmit = async (event) => {
         event.preventDefault();
 
         const commentData = {
@@ -64,17 +61,26 @@ export const FullPost = () => {
             text: commentText,
         };
 
-        axios
-            .post('/comments', commentData)
-            .then((res) => {
-                setComments([...comments, res.data]);
-                setCommentText('');
-                setTimeout(() => window.location.reload(), 1500); // Может вызывать дискомфорт
-            })
-            .catch((err) => {
-                console.warn(err);
-                alert('Ошибка при отправке комментария');
-            });
+        try {
+            const response = await axios.post('/comments', commentData);
+            const newComment = response.data;
+            setComments([...comments, newComment]);
+            setCommentText('');
+
+            // Fetch all comments again
+            axios
+                .get(`/comments/${id}`)
+                .then((res) => {
+                    setComments(res.data);
+                })
+                .catch((err) => {
+                    console.warn(err);
+                    alert('Ошибка при получении комментариев');
+                });
+        } catch (err) {
+            console.warn(err);
+            alert('Ошибка при отправке комментария');
+        }
     };
 
     if (isLoading) {

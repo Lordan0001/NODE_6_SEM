@@ -46,29 +46,37 @@ export const AddPost = () => {
     setText(value);
   }, []);
 
-  const onSubmit = async () => {
-    try {
-      setLoading(true);
+    const onSubmit = async () => {
+        try {
+            setLoading(true);
 
-      const fields = {
-        title,
-        imageUrl,
-        tags,
-        text,
-      };
+            // Split the tags string into an array
+            const tagArray = tags.split(',').map((tag) => tag.trim());
 
-      const { data } = isEditing
-        ? await axios.patch(`/posts/${id}`, fields)
-        : await axios.post('/posts', fields);
+            // Check if the first tag is not equal to any of the specified tags
+            if (tagArray.length > 0 && !['Music', 'Cooking', 'Videogames', 'Memes'].includes(tagArray[0])) {
+                tagArray.unshift('Others'); // Add 'Others' tag at the beginning
+            }
 
-      const _id = isEditing ? id : data._id;
+            const fields = {
+                title,
+                imageUrl,
+                tags: tagArray.join(','), // Convert the tag array back to a string
+                text,
+            };
 
-      navigate(`/posts/${_id}`);
-    } catch (err) {
-      console.warn(err);
-      alert('Ошибка при создании статьи!');
-    }
-  };
+            const { data } = isEditing
+                ? await axios.patch(`/posts/${id}`, fields)
+                : await axios.post('/posts', fields);
+
+            const _id = isEditing ? id : data._id;
+
+            navigate(`/posts/${_id}`);
+        } catch (err) {
+            console.warn(err);
+            alert('Ошибка при создании статьи!');
+        }
+    };
 
   React.useEffect(() => {
     if (id) {

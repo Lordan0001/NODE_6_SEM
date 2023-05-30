@@ -14,7 +14,6 @@ import axios from "../axios";
 import { fetchAuthMe } from '../redux/slices/auth';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-//import { io } from 'socket.io-client'; // Import the io function
 
 export const Home = () => {
   const dispatch = useDispatch();
@@ -58,18 +57,6 @@ export const Home = () => {
           alert('Ошибка при получении лайков');
         });
 
-    // const socket = io('https://localhost:4444'); // Connect to the WebSocket server
-    //
-    // // Add event listeners and handle socket events
-    // socket.on('newPost', (data) => {
-    //   // Handle the 'newPost' event received from the server
-    //   console.log('Received new post:', data);
-    // });
-    //
-    // // Clean up the WebSocket connection when the component unmounts
-    // return () => {
-    //   socket.disconnect();
-    // };
   }, [dispatch, activeTab, userId]);
 
   const getLikesCount = (postId) => {

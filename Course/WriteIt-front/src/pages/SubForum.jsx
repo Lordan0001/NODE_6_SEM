@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
@@ -13,10 +13,12 @@ import {
   fetchTags,
   fetchCategories,
   fetchCategoriesWithTags,
-  fetchPostsTags
+  fetchPostsTags,
+  fetchAllLikes,
 } from '../redux/slices/posts';
 import {useParams} from "react-router-dom";
 import {HideBlock} from "../components";
+import axios from "../axios";
 
 
 export const SubForum = () => {
@@ -26,6 +28,7 @@ export const SubForum = () => {
   const { tagfilter } = useParams();
   const fullUrl = window.location.href;
   const urlParts = fullUrl.split("/");
+  const [likes, setLikes] = useState([]);
   let tagname = urlParts[4];
 
   const isPostsLoading = posts.status === 'loading';
@@ -40,8 +43,26 @@ export const SubForum = () => {
     dispatch(fetchCategoriesWithTags({tagfilter}));
     dispatch(fetchComments());
     dispatch(fetchCategories());
-  }, []);
+    dispatch(fetchAllLikes());
 
+
+
+    axios
+        .get(`/like`)
+        .then((data) => {
+          setLikes(data.data);
+        })
+        .catch((err) => {
+          console.warn(err);
+          alert('Ошибка при получении лайков');
+        });
+
+
+
+  }, []);
+  const getLikesCount = (postId) => {
+    return likes.filter((like) => like.post === postId).length;
+  };
   return (
     <>
 
@@ -58,7 +79,8 @@ export const SubForum = () => {
                 user={obj.user}
                 createdAt={obj.createdAt}
                 viewsCount={obj.viewsCount}
-                commentsCount={comments.count}//problem here
+                commentsCount={comments.items.filter((com) => com.post === obj._id).length}
+                likes={getLikesCount(obj._id)}
                 tags={obj.tags}
                 isEditable={userData?._id === obj.user._id || userData?.role === 'admin' }
               />

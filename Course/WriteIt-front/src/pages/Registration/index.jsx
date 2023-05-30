@@ -23,6 +23,7 @@ export const Registration = () => {
       fullName: 'user user',
       email: 'user@test.com',
       password: '1234',
+      avatarUrl: '',
     },
     mode: 'onChange',
   });
@@ -44,44 +45,54 @@ export const Registration = () => {
   }
 
   return (
-    <Paper classes={{ root: styles.root }}>
-      <Typography classes={{ root: styles.title }} variant="h5">
-        Создание аккаунта
-      </Typography>
-      <div className={styles.avatar}>
-        <Avatar sx={{ width: 100, height: 100 }} />
-      </div>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <TextField
-          error={Boolean(errors.fullName?.message)}
-          helperText={errors.fullName?.message}
-          {...register('fullName', { required: 'Укажите полное имя' })}
-          className={styles.field}
-          label="Полное имя"
-          fullWidth
-        />
-        <TextField
-          error={Boolean(errors.email?.message)}
-          helperText={errors.email?.message}
-          type="email"
-          {...register('email', { required: 'Укажите почту' })}
-          className={styles.field}
-          label="E-Mail"
-          fullWidth
-        />
-        <TextField
-          error={Boolean(errors.password?.message)}
-          helperText={errors.password?.message}
-          type="password"
-          {...register('password', { required: 'Укажите пароль' })}
-          className={styles.field}
-          label="Пароль"
-          fullWidth
-        />
-        <Button disabled={!isValid} type="submit" size="large" variant="contained" fullWidth>
-          Зарегистрироваться
-        </Button>
-      </form>
-    </Paper>
+      <Paper classes={{ root: styles.root }}>
+        <Typography classes={{ root: styles.title }} variant="h5">
+          Создание аккаунта
+        </Typography>
+        <div className={styles.avatar}>
+          {register.imageUrl && register.imageUrl.length > 0 ? (
+              <Avatar sx={{ width: 100, height: 100 }} src={register.imageUrl} />
+          ) : (
+              <Avatar sx={{ width: 100, height: 100 }} />
+          )}
+        </div>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <TextField
+              error={Boolean(errors.fullName?.message)}
+              helperText={errors.fullName?.message}
+              {...register('fullName', { required: 'Укажите полное имя' })}
+              className={styles.field}
+              label="Полное имя"
+              fullWidth
+          />
+          <TextField
+              error={Boolean(errors.email?.message)}
+              helperText={errors.email?.message}
+              type="email"
+              {...register('email', { required: 'Укажите почту' })}
+              className={styles.field}
+              label="E-Mail"
+              fullWidth
+          />
+          <TextField
+              error={Boolean(errors.password?.message)}
+              helperText={errors.password?.message}
+              type="password"
+              {...register('password', { required: 'Укажите пароль' })}
+              className={styles.field}
+              label="Пароль"
+              fullWidth
+          />
+          <TextField
+              {...register('avatarUrl')}
+              className={styles.field}
+              label="URL на картинку"
+              fullWidth
+          />
+          <Button disabled={!isValid} type="submit" size="large" variant="contained" fullWidth>
+            Зарегистрироваться
+          </Button>
+        </form>
+      </Paper>
   );
 };

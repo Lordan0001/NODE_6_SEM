@@ -45,6 +45,8 @@ export const Header = () => {
             } to="/">
               <div>WriteIt</div>
             </Link>
+            {isAuth ? (
+            <>
             <div className={styles.search}>
               <Grid container spacing={1} alignItems="center">
                 <Grid item>
@@ -63,6 +65,7 @@ export const Header = () => {
                 </Grid>
               </Grid>
             </div>
+            </> ) : null}
             <div className={styles.buttons}>
               {isAuth ? (
                   <>

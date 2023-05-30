@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { SideBlock } from "./SideBlock";
+import React, {useState, useEffect} from "react";
+import {SideBlock} from "./SideBlock";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
@@ -8,8 +8,8 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import io from "socket.io-client";
 import axios from "axios";
-import { useSelector } from "react-redux";
-import { selectIsAuth } from "../redux/slices/auth";
+import {useSelector} from "react-redux";
+import {selectIsAuth} from "../redux/slices/auth";
 
 export const Chat = () => {
     const [chatMessages, setChatMessages] = useState([]);
@@ -52,7 +52,7 @@ export const Chat = () => {
                 },
             });
 
-            const { fullName, avatarUrl } = response.data;
+            const {fullName, avatarUrl} = response.data;
             setUserFullName(fullName);
             setUserAvatarUrl(avatarUrl);
         } catch (error) {
@@ -148,7 +148,7 @@ export const Chat = () => {
                                 }
                             />
                         </ListItem>
-                        <Divider variant="inset" component="li" />
+                        <Divider variant="inset" component="li"/>
                     </React.Fragment>
                 ))}
             </List>
