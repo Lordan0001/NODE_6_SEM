@@ -19,6 +19,7 @@ export const FullPost = () => {
     const dispatch = useDispatch();
     const [likes, setLikes] = React.useState('');
 
+
     React.useEffect(() => {
         axios
             .get(`/posts/${id}`)
@@ -81,6 +82,11 @@ export const FullPost = () => {
             console.warn(err);
             alert('Ошибка при отправке комментария');
         }
+
+
+
+
+
     };
 
     if (isLoading) {

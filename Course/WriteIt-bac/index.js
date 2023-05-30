@@ -56,30 +56,29 @@ io.on('connection', (socket) => {
 
   clients.set(socket.id, socket);
 
-  // Example: Emitting a 'newPost' event to all connected clients
+
   socket.on('newPost', (data) => {
-    // Handle the new post data received from the client
+
     console.log('Received new post from client:', data);
 
-    // Broadcast the new post to all connected clients except the sender
+
     socket.broadcast.emit('newPost', data);
   });
-  // Handle chat messages
+
   socket.on('chatMessage', (data) => {
     console.log('Received chat message:', data);
-    // Broadcast the chat message to all connected clients
+
     io.emit('chatMessage', data);
   });
 
-  // Handle client disconnect
+
   socket.on('disconnect', () => {
     console.log('Client disconnected');
 
-    // Remove the disconnected client from the stored clients
+
     clients.delete(socket.id);
   });
 
-  // You can add more event listeners and logic here
 });
 
 app.get('/auth/me', checkAuth, UserController.getMe);
