@@ -20,6 +20,7 @@ export const FullPost = () => {
     const [likes, setLikes] = React.useState('');
 
 
+
     React.useEffect(() => {
         axios
             .get(`/posts/${id}`)
@@ -117,6 +118,8 @@ export const FullPost = () => {
                                 value={commentText}
                                 onChange={(event) => setCommentText(event.target.value)}
                                 placeholder="Write Something..."
+                                style={{ width: '100%', boxSizing: 'border-box' }}
+
                             />
                             <button type="submit">Send</button>
                         </form>

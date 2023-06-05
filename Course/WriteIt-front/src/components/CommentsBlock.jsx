@@ -10,6 +10,7 @@ import Skeleton from "@mui/material/Skeleton";
 import Button from "@mui/material/Button";
 import { useSelector } from "react-redux";
 import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
 import axios from "axios";
 
 export const CommentsBlock = ({ items, children, isLoading = true }) => {
@@ -18,6 +19,8 @@ export const CommentsBlock = ({ items, children, isLoading = true }) => {
     const remainingItems = isLoading ? [] : items.slice(5);
     const userData = useSelector((state) => state.auth.data);
     const [hoveredComment, setHoveredComment] = useState(null);
+    const [editedComment, setEditedComment] = useState("");
+    const [editCommentId, setEditCommentId] = useState(null);
 
     const toggleDropdown = () => {
         setShowDropdown(!showDropdown);
@@ -25,20 +28,42 @@ export const CommentsBlock = ({ items, children, isLoading = true }) => {
 
     const handleDeleteComment = async (commentId) => {
         try {
-            const token = localStorage.getItem("token"); // Получение токена из localStorage
+            const token = localStorage.getItem("token"); // Get the token from localStorage
             const config = {
                 headers: {
-                    Authorization: `Bearer ${token}`, // Добавление токена в заголовок запроса
+                    Authorization: `Bearer ${token}`, // Add the token to the request headers
                 },
             };
             await axios.delete(`https://localhost:4444/comments/${commentId}`, config);
-            // Обработка успешного удаления, обновление состояния или получение обновленных комментариев
+            // Handle successful deletion, update the state or fetch the updated comments
             setTimeout(() => {
                 window.location.reload();
             }, 1000);
         } catch (error) {
             console.warn(error);
-            alert("Ошибка при удалении комментария");
+            alert("Error deleting the comment");
+        }
+    };
+
+    const handleEditComment = async (commentId) => {
+        try {
+            const token = localStorage.getItem("token"); // Get the token from localStorage
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${token}`, // Add the token to the request headers
+                },
+            };
+            const body = {
+                text: editedComment, // Use the editedComment state as the new text value
+            };
+            await axios.patch(`https://localhost:4444/comments/${commentId}`, body, config);
+            // Handle successful edit, update the state or fetch the updated comments
+            setTimeout(() => {
+                window.location.reload();
+            }, 1000);
+        } catch (error) {
+            console.warn(error);
+            alert("Error editing the comment");
         }
     };
 
@@ -53,7 +78,7 @@ export const CommentsBlock = ({ items, children, isLoading = true }) => {
     return (
         <SideBlock title="Comments">
             <List>
-                {/* Основные комментарии */}
+                {/* Main comments */}
                 {displayedItems.map((obj, index) => (
                     <React.Fragment key={index}>
                         <ListItem
@@ -75,10 +100,34 @@ export const CommentsBlock = ({ items, children, isLoading = true }) => {
                                 </div>
                             ) : (
                                 <>
-                                    <ListItemText primary={obj.user.fullName} secondary={obj.text} />
-                                    {userData?.role === "admin" && hoveredComment === obj._id && (
-                                        <DeleteIcon onClick={() => handleDeleteComment(obj._id)} />
+                                    {editCommentId === obj._id ? (
+                                        <textarea
+                                            rows={3} // Set the number of rows to make the textarea larger
+                                            value={editedComment}
+                                            onChange={(e) => setEditedComment(e.target.value)}
+                                            style={{ width: "100%" }} // Adjust the width to fit the container
+                                        />
+                                    ) : (
+                                        <ListItemText primary={obj.user.fullName} secondary={obj.text} />
                                     )}
+                                    <div>
+                                        {(userData?._id === obj.user._id || userData?.role === "admin") &&
+                                            hoveredComment === obj._id && (
+                                                <>
+                                                    {editCommentId === obj._id ? (
+                                                        <>
+                                                            <Button onClick={() => handleEditComment(obj._id)}>Save</Button>
+                                                            <Button onClick={() => setEditCommentId(null)}>Cancel</Button>
+                                                        </>
+                                                    ) : (
+                                                        <>
+                                                            <EditIcon onClick={() => setEditCommentId(obj._id)} />
+                                                            <DeleteIcon onClick={() => handleDeleteComment(obj._id)} />
+                                                        </>
+                                                    )}
+                                                </>
+                                            )}
+                                    </div>
                                 </>
                             )}
                         </ListItem>
@@ -86,7 +135,7 @@ export const CommentsBlock = ({ items, children, isLoading = true }) => {
                     </React.Fragment>
                 ))}
 
-                {/* Выпадающее меню с комментариями */}
+                {/* Dropdown menu with remaining comments */}
                 {showDropdown &&
                     remainingItems.map((obj, index) => (
                         <React.Fragment key={index}>
@@ -99,9 +148,13 @@ export const CommentsBlock = ({ items, children, isLoading = true }) => {
                                     <Avatar alt={obj.user.fullName} src={obj.user.avatarUrl} />
                                 </ListItemAvatar>
                                 <ListItemText primary={obj.user.fullName} secondary={obj.text} />
-                                {userData?.role === "admin" && hoveredComment === obj._id && (
-                                    <DeleteIcon onClick={() => handleDeleteComment(obj._id)} />
-                                )}
+                                {(userData?._id === obj.user._id || userData?.role === "admin") &&
+                                    hoveredComment === obj._id && (
+                                        <>
+                                            <EditIcon onClick={() => setEditCommentId(obj._id)} />
+                                            <DeleteIcon onClick={() => handleDeleteComment(obj._id)} />
+                                        </>
+                                    )}
                             </ListItem>
                             <Divider variant="inset" component="li" />
                         </React.Fragment>

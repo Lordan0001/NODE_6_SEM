@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import axios from 'axios';
 import styles from './UserInfo.module.scss';
 import { fetchAuthMe } from '../../redux/slices/auth';
 import { fetchSubscribe } from "../../redux/slices/posts";
+import {selectIsAuth} from "../../redux/slices/auth";
 
-export const UserInfo = ({ avatarUrl, fullName, additionalText, _id }) => {
+export const UserInfo = ({ avatarUrl, fullName, additionalText, _id,}) => {
     const dispatch = useDispatch();
     const postOwnerId = _id;
     const [userId, setUserId] = useState(null);
     const [subscribed, setSubscribed] = useState(false);
+    const isAuth = useSelector(selectIsAuth);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -51,10 +53,16 @@ export const UserInfo = ({ avatarUrl, fullName, additionalText, _id }) => {
             <div className={styles.userDetails}>
                 <span className={styles.userName}>{fullName}</span>
                 <span className={styles.additional}>{additionalText}</span>
-                {postOwnerId !== userId && (
-                    <button className={buttonClassName} onClick={handleSubscribe}>
-                        {buttonText}
-                    </button>
+                {isAuth ? (
+                    <>
+                        {postOwnerId !== userId && (
+                            <button className={buttonClassName} onClick={handleSubscribe}>
+                                {buttonText}
+                            </button>
+                        )}
+                    </>
+                ) : (
+                    <></>
                 )}
             </div>
         </div>
