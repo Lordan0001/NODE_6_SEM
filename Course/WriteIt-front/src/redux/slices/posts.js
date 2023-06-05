@@ -28,28 +28,20 @@ export const fetchPostsWithTagAndWithout = createAsyncThunk('posts/fetchPostsWit
 });
 
 export const fetchPostsTags = createAsyncThunk('posts/fetchPostsTags', async ({ tagname }) => {
-  //const url = `/${tagsWord}/${tagname}`;
   const response = await axios.get(`/tags/${tagname}`);
   return response.data;
 });
 
 export const fetchSearchPosts = createAsyncThunk('posts/fetchSearchPosts', async ({ tagname }) => {
-  //const url = `/${tagsWord}/${tagname}`;
   const response = await axios.get(`/search/${tagname}`);
   return response.data;
 });
-
-
 
 export const fetchCategoriesWithTags = createAsyncThunk('posts/fetchCategoriesWithTags', async ({ tagfilter }) => {
   const url = `/subforum/${tagfilter}`;
   const response = await axios.get(url);
   return response.data;
 });
-
-
-
-
 
 export const fetchComments = createAsyncThunk('posts/fetchComments', async () => {
   const { data } = await axios.get('/comments');
@@ -77,11 +69,6 @@ export const fetchRemovePost = createAsyncThunk('posts/fetchRemovePost', async (
 );
 
 export const fetchSubscribe = createAsyncThunk('buttons/fetchSubscribe', async (requestBody) => {
-  // const requestBody = {
-  //   ownerId: userId,
-  //   subToId: postOwnerId
-  // };
-
   try {
     const response = await axios.patch('/subscribe', requestBody);
     return response.data;

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
@@ -28,11 +28,26 @@ export const Registration = () => {
     mode: 'onChange',
   });
 
+  const [isInvalidUrl, setIsInvalidUrl] = useState(false);
+
+  useEffect(() => {
+    setIsInvalidUrl(!register.imageUrl || !isValidUrl(register.imageUrl));
+  }, [register.imageUrl]);
+
+  const isValidUrl = (url) => {
+    try {
+      new URL(url);
+      return true;
+    } catch (error) {
+      return false;
+    }
+  };
+
   const onSubmit = async (values) => {
     const data = await dispatch(fetchRegister(values));
 
     if (!data.payload) {
-      return alert('Не удалось регистрироваться!');
+      return alert('Failed to pass registration!');
     }
 
     if ('token' in data.payload) {
@@ -47,7 +62,7 @@ export const Registration = () => {
   return (
       <Paper classes={{ root: styles.root }}>
         <Typography classes={{ root: styles.title }} variant="h5">
-          Создание аккаунта
+          Create an account
         </Typography>
         <div className={styles.avatar}>
           {register.imageUrl && register.imageUrl.length > 0 ? (
@@ -60,16 +75,16 @@ export const Registration = () => {
           <TextField
               error={Boolean(errors.fullName?.message)}
               helperText={errors.fullName?.message}
-              {...register('fullName', { required: 'Укажите полное имя' })}
+              {...register('fullName', { required: 'Enter full name' })}
               className={styles.field}
-              label="Полное имя"
+              label="Full name"
               fullWidth
           />
           <TextField
               error={Boolean(errors.email?.message)}
               helperText={errors.email?.message}
               type="email"
-              {...register('email', { required: 'Укажите почту' })}
+              {...register('email', { required: 'Enter your email' })}
               className={styles.field}
               label="E-Mail"
               fullWidth
@@ -78,19 +93,28 @@ export const Registration = () => {
               error={Boolean(errors.password?.message)}
               helperText={errors.password?.message}
               type="password"
-              {...register('password', { required: 'Укажите пароль' })}
+              {...register('password', {
+                required: 'Enter a password',
+                minLength: {
+                  value: 5,
+                  message: 'Password must contain at least 5 characters',
+                },
+              })}
               className={styles.field}
-              label="Пароль"
+              label="Password"
               fullWidth
           />
           <TextField
-              {...register('avatarUrl')}
+              {...register('avatarUrl', {
+                setValueAs: (value) => (value ? value : 'https://cdn.pixabay.com/photo/2014/04/02/10/25/man-303792_1280.png'),
+              })}
               className={styles.field}
-              label="URL на картинку"
+              label="URL for image"
               fullWidth
           />
+
           <Button disabled={!isValid} type="submit" size="large" variant="contained" fullWidth>
-            Зарегистрироваться
+            Sign Up
           </Button>
         </form>
       </Paper>
