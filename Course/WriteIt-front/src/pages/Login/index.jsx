@@ -49,13 +49,19 @@ export const Login = () => {
       </Typography>
       <form onSubmit={handleSubmit(onSubmit)}>
         <TextField
-          className={styles.field}
-          label="E-Mail"
-          error={Boolean(errors.email?.message)}
-          helperText={errors.email?.message}
-          type="email"
-          {...register('email', { required: 'Enter your email' })}
-          fullWidth
+            error={Boolean(errors.email?.message)}
+            helperText={errors.email?.message}
+            type="email"
+            {...register('email', {
+              required: 'Enter your email',
+              pattern: {
+                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                message: 'Please enter a valid email address',
+              },
+            })}
+            className={styles.field}
+            label="E-Mail"
+            fullWidth
         />
         <TextField
           className={styles.field}
