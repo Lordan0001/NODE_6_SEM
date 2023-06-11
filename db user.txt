@@ -1,0 +1,45 @@
+{
+    "email":"marilyn@dark.com",
+    "password":"manson11",
+    "fullName": "Marilyn Manson",
+    "avatarUrl":"https://lastfm.freetls.fastly.net/i/u/770x0/c7063d58538343c891805a24d1e7c4a7.jpg#c7063d58538343c891805a24d1e7c4a7"
+}
+
+{
+    "email":"Ozzy@dark.com",
+    "password":"ozzy11",
+    "fullName": "Ozzy Osborne",
+    "avatarUrl":"https://lastfm.freetls.fastly.net/i/u/770x0/0c28c89c63dab96f82b52ba318a5a2ea.jpg#0c28c89c63dab96f82b52ba318a5a2ea"
+}
+
+{
+    "email":"Zombie@dark.com",
+    "password":"Zombie11",
+    "fullName": "Rob Zombie",
+    "avatarUrl":"https://lastfm.freetls.fastly.net/i/u/770x0/61a496f29226445ea3d4d2d7ce5c4493.jpg#61a496f29226445ea3d4d2d7ce5c4493"
+}
+
+{
+    "email":"Gamer11@sony.com",
+    "password":"Gamer11",
+    "fullName": "John Kratos",
+    "avatarUrl":"https://klike.net/uploads/posts/2023-01/1674103561_3-34.jpg"
+}
+
+    "email":"Witcher@project.com",
+    "password":"Witcher11",
+    "fullName": "Geralt OfRiveia",
+    "avatarUrl":"https://wallpapercrafter.com/sizes/2560x1440/149881-Geralt-of-Rivia-The-Witcher-The-Witcher-3-Wild-Hunt-video-games-game-art-Games-posters-video-game-art-video-game-characters-fantasy-art-fantasy-armor-men-warrior-sword.jpg"
+}
+
+{
+    "email":"Microsoft@mic.com",
+    "password":"Microsoft11",
+    "fullName": "Bill Gates",
+    "avatarUrl":"https://freepngimg.com/thumb/bill_gates/23973-7-bill-gates-file.png"
+}
+
+
+
+user17@test.com
+df3r2378rf
