@@ -1,0 +1,49 @@
+doctype=html
+html
+    head
+        title Add Incident
+    body
+        h3 Add Incident
+        a(href="index") main
+        br
+        h3 customerId
+        input( type='text' id="customerId")
+        h3 productCode
+        input( type='text' id="productCode")
+        h3 title
+        input( type='text' id="title")
+        h3 description
+        input( type='text' id="description")
+        button(onclick='add_incident()') Add
+    script.
+        function add_incident() {
+            var customerId = document.getElementById('customerId').value
+            var productCode = document.getElementById('productCode').value
+            var title = document.getElementById('title').value
+            var description = document.getElementById('description').value
+            if (customerId == "" || productCode == "" || title == ""| description == "") {
+                alert("not allowed null");
+            }
+            else {
+                var addIncident = {
+                    CustomerID: customerId,
+                    ProductCode: productCode,
+                    Title: title,
+                    Description: description
+                }
+                fetch(`http://localhost:3000/api/incidents`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(addIncident)
+                }).then(res => {
+                    if (res.ok) {
+                        return res.json();
+                    } else {
+                        alert("Error")
+                    }
+                })
+            }
+        }

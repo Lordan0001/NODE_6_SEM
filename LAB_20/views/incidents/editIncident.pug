@@ -1,0 +1,61 @@
+doctype=html
+html
+    head
+        title Update Incident
+    body
+        h1 edit incident with id #{IncidentID}
+        a(href="index") main
+        br
+        h3 customerId
+        input( type='text' id="customerId" value=CustomerID)
+        h3 productCode
+        input( type='text' id="productCode" value=ProductCode)
+        h3 techId
+        input( type='text' id="techId" value=TechID)
+        h3 dateOpened
+        input( type='text' id="dateOpened" value=DateOpened)
+        h3 dateClosed
+        input( type='text' id="dateClosed" value =DateClosed)
+        h3 title
+        input( type='text' id="title" value =Title)
+        h3 description
+        input( type='text' id="description" value =Description)
+        button(onclick='update_incident()' ) Update
+    script.
+        function update_incident() {
+            var customerId = document.getElementById('customerId').value
+            var productCode = document.getElementById('productCode').value
+            var techId = document.getElementById('techId').value
+            var dateOpened = document.getElementById('dateOpened').value
+            var dateClosed = document.getElementById('dateClosed').value
+            var title = document.getElementById('title').value
+            var description = document.getElementById('description').value
+            if (customerId == "" || productCode == "" || dateOpened != null|| title == ""|| description == ""||!(techId!=""&&dateClosed==null)||!(techId==""&&dateClosed!=null)) {
+                alert("not allowed null");
+            }
+            else {
+                var updateIncident = {
+                    IncidentID:"#{IncidentID}",
+                    CustomerID: customerId,
+                    TechID:techId,
+                    DateOpened: dateOpened,
+                    DateClosed: dateClosed,
+                    Title: title,
+                    Description: description
+                }
+                fetch(`http://localhost:3000/api/incidents`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(updateIncident)
+                }).then(res => {
+                    if (res.ok) {
+                        return res.json();
+                    } else {
+                        alert("Error")
+                    }
+                })
+            }
+        }

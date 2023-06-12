@@ -1,0 +1,60 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlserver"
+  url      = env("DATABASE_URL")
+}
+
+model Customers {
+  CustomerID    Int             @id(map: "PK__Customer__A4AE64B8816AFBB9") @default(autoincrement())
+  Name          String          @db.VarChar(50)
+  Address       String          @db.VarChar(50)
+  City          String          @db.VarChar(50)
+  Phone         String?         @db.VarChar(20)
+  Email         String?         @db.VarChar(20)
+  Incidents     Incidents[]
+  Registrations Registrations[]
+}
+
+model Incidents {
+  IncidentID  Int          @id(map: "PK__Incident__3D8053923D4DAB62") @default(autoincrement())
+  CustomerID  Int
+  ProductCode Int
+  TechID      Int?
+  DateOpened  DateTime     @default(now(), map: "DF__Incidents__DateO__4F7CD00D") @db.DateTime
+  DateClosed  DateTime?    @db.DateTime
+  Title       String       @db.VarChar(50)
+  Description String       @db.VarChar(2000)
+  Customers   Customers    @relation(fields: [CustomerID], references: [CustomerID], onUpdate: NoAction, map: "FK__Incidents__Custo__4CA06362")
+  Products    Products     @relation(fields: [ProductCode], references: [ProductCode], onUpdate: NoAction, map: "FK__Incidents__Produ__4D94879B")
+  Technicians Technicians? @relation(fields: [TechID], references: [TechID], onDelete: NoAction, onUpdate: NoAction, map: "FK__Incidents__TechI__4E88ABD4")
+
+  @@index([DateOpened(sort: Desc)], map: "index_IncidentsDateDesc")
+}
+
+model Products {
+  ProductCode   Int             @id(map: "PK__Products__2F4E024E3B23CCEC") @default(autoincrement())
+  Name          String          @db.VarChar(50)
+  Version       Decimal         @db.Decimal(18, 1)
+  ReleaseDate   DateTime        @db.DateTime
+  Incidents     Incidents[]
+  Registrations Registrations[]
+}
+
+model Registrations {
+  CustomerID       Int
+  ProductCode      Int
+  RegistrationDate DateTime  @unique(map: "index_RegistrationsDate") @default(now(), map: "DF__Registrat__Regis__571DF1D5") @db.DateTime
+  Customers        Customers @relation(fields: [CustomerID], references: [CustomerID], onUpdate: NoAction, map: "FK__Registrat__Custo__5535A963")
+  Products         Products  @relation(fields: [ProductCode], references: [ProductCode], onUpdate: NoAction, map: "FK__Registrat__Produ__5629CD9C")
+}
+
+model Technicians {
+  TechID    Int         @id(map: "PK__Technici__8AFFB89F56D29748") @default(autoincrement())
+  Name      String      @db.VarChar(50)
+  Email     String      @db.VarChar(50)
+  Phone     String      @unique(map: "index_TechniciansPhone") @db.VarChar(20)
+  Incidents Incidents[]
+}

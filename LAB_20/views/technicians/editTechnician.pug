@@ -1,0 +1,46 @@
+doctype=html
+html
+    head
+        title Update Technician
+    body
+        h1 edit technician with id #{TechID}
+        a(href="index") main
+        br
+        h3 Name
+        input( type='text' id="name" value=Name )
+        h3 Phone
+        input( type='text' id="phone" value=Phone )
+        h3 Email
+        input( type='text' id="email" value=Email )
+        button(onclick='update_customer()') Update
+    script.
+        function update_customer() {
+            var name = document.getElementById('name').value
+            var phone = document.getElementById('phone').value
+            var email = document.getElementById('email').value
+            if (name == "" || phone == "" || email == "") {
+                alert("not allowed null");
+            }
+            else {
+                var updateTechnician = {
+                    TechID: "#{TechID}",
+                    Name: name,
+                    Phone: phone,
+                    Email: email
+                }
+                fetch(`http://localhost:3000/api/technicians`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(updateTechnician)
+                }).then(res => {
+                    if (res.ok) {
+                        return res.json();
+                    } else {
+                        alert("Error")
+                    }
+                })
+            }
+        }

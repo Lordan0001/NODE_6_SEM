@@ -1,0 +1,82 @@
+doctype=html
+html
+    script(src="https://code.jquery.com/jquery-2.2.4.js", integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI=", crossorigin="anonymous")
+    script(src="http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.js")
+    head
+        style(type="text/css").
+            .lab14 {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            #get_result {
+                display: flex;
+                flex-direction: column;
+            }
+
+            #itemList {
+                border-collapse: collapse;
+            }
+        title Products
+        button(onclick='get_products()') GET PRODUCTS
+        a(href='/products/add') ADD
+        script(id="itemTemplate" type="text/x-jquery-tmpl").
+            <tr>
+            <td>${ProductCode}</td>
+            <td>${Name}</td>
+            <td>${Version}</td>
+            <td>${ReleaseDate}</td>
+            <td><a href='/products/${ProductCode}'>Update</a></td>
+            <td><button class="btnDelete">Delete</button></td>
+            </tr>
+        table(id="itemList" border="1")
+            tbody
+        script.
+            function get_products() {
+                console.log('get');
+                fetch(`http://localhost:3000/api/products`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    }
+                }).then(res => {
+                    if (res.ok) {
+                        return res.json();
+                    } else {
+                        alert("Error")
+                    }
+                }).then(data => {
+                    console.log(data);
+                    $("#itemList tr").remove();
+                    $("#itemTemplate").tmpl(data).appendTo("#itemList tbody");
+                    $(".btnDelete").on('click', function () {
+                    console.log('clicked delete')
+                    var currentRow = $(this).closest("tr");
+
+                    var ProductCode = currentRow.find("td:eq(0)").html();
+
+                    delete_product(ProductCode);
+                    });
+                })
+            }
+            function delete_product(ProductCode) {
+                    fetch(`http://localhost:3000/api/products/${ProductCode}`, {
+                        method: "DELETE",
+                        headers: {
+                            "Content-Type": 'application/json',
+                            "Accept": 'application/json'
+                        }
+
+                    }).then(res => {
+                        if (res.ok) {
+                            return res.json();
+                        } else {
+                            alert("Error")
+                        }
+                    }).then((data) => {
+                        console.log(data);
+                    })
+                }
+

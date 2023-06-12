@@ -1,0 +1,46 @@
+doctype=html
+html
+    head
+        title Update Product
+    body
+        h1 edit product with id #{ProductCode}
+        a(href="index") main
+        br
+        h3 name
+        input( type='text' id="name" value=Name )
+        h3 version
+        input( type='text' id="version" value=Version )
+        h3 release date
+        input( type='text' id="releaseDate" value=ReleaseDate )
+        button(onclick='update_product()') Update
+    script.
+        function update_product() {
+            var name = document.getElementById('name').value
+            var version = document.getElementById('version').value
+            var releaseDate = document.getElementById('releaseDate').value
+            if (name == "" || version == "" || releaseDate == null) {
+                alert("not allowed null");
+            }
+            else {
+                var updateProduct = {
+                    ProductCode: "#{ProductCode}",
+                    Name: name,
+                    Version: version,
+                    ReleaseDate: releaseDate
+                }
+                fetch(`http://localhost:3000/api/products`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(updateProduct)
+                }).then(res => {
+                    if (res.ok) {
+                        return res.json();
+                    } else {
+                        alert("Error")
+                    }
+                })
+            }
+        }

@@ -1,0 +1,45 @@
+doctype=html
+html
+    head
+        title Add Product
+    body
+        h1 Add product
+        a(href="index") main
+        br
+        h3 Name
+        input( type='text' id="name" value=Name )
+        h3 Version
+        input( type='text' id="version" value=Version )
+        h3 Release Date
+        input( type='datetime-local' id="releaseDate" value=ReleaseDate )
+        button(onclick='add_product()') Add
+    script.
+        function add_product() {
+            var name = document.getElementById('name').value
+            var version = document.getElementById('version').value
+            var releaseDate = new Date(document.getElementById('releaseDate').value)
+            if (name == "" || version == "" || releaseDate == null) {
+                alert("not allowed null");
+            }
+            else {
+                var addProduct = {
+                    Name: name,
+                    Version: version,
+                    ReleaseDate: releaseDate
+                }
+                fetch(`http://localhost:3000/api/products`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(addProduct)
+                }).then(res => {
+                    if (res.ok) {
+                        return res.json();
+                    } else {
+                        alert("Error")
+                    }
+                })
+            }
+        }

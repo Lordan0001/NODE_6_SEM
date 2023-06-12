@@ -1,0 +1,45 @@
+doctype=html
+html
+    head
+        title Add Registration
+    body
+        h1 Add registration
+        a(href="index") main
+        br
+        h3 CustomerID
+        input( type='text' id="CustomerID")
+        h3 ProductCode
+        input( type='text' id="ProductCode")
+        h3 RegistrationDate
+        input( type='datetime-local' id="RegistrationDate")
+        button(onclick='add_registration()') Add
+    script.
+        function add_registration() {
+            var CustomerID = document.getElementById('CustomerID').value
+            var ProductCode = document.getElementById('ProductCode').value
+            var RegistrationDate = new Date(document.getElementById('RegistrationDate').value)
+            if (CustomerID == "" || ProductCode == "" || RegistrationDate == null) {
+                alert("not allowed null");
+            }
+            else {
+                var addRegistration = {
+                    CustomerID: CustomerID,
+                    ProductCode: ProductCode,
+                    RegistrationDate: RegistrationDate
+                }
+                fetch(`http://localhost:3000/api/registrations`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(addRegistration)
+                }).then(res => {
+                    if (res.ok) {
+                        return res.json();
+                    } else {
+                        alert("Error")
+                    }
+                })
+            }
+        }

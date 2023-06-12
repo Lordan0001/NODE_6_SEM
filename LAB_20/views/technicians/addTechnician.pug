@@ -1,0 +1,45 @@
+doctype=html
+html
+    head
+        title Add Technician
+    body
+        h1 Add technician
+        a(href="index") main
+        br
+        h3 Name
+        input( type='text' id="name" value=Name )
+        h3 Phone
+        input( type='text' id="phone" value=Phone )
+        h3 Email
+        input( type='text' id="email" value=Email )
+        button(onclick='add_technician()') Add
+    script.
+        function add_technician() {
+            var name = document.getElementById('name').value
+            var phone = document.getElementById('phone').value
+            var email = document.getElementById('email').value
+            if (name == "" || phone == "" || email == "") {
+                alert("not allowed null");
+            }
+            else {
+                var addTechnician = {
+                    Name: name,
+                    Phone: phone,
+                    Email: email
+                }
+                fetch(`http://localhost:3000/api/technicians`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(addTechnician)
+                }).then(res => {
+                    if (res.ok) {
+                        return res.json();
+                    } else {
+                        alert("Error")
+                    }
+                })
+            }
+        }

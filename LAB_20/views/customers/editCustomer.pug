@@ -1,0 +1,49 @@
+doctype=html
+html
+    head
+        title Update Customer
+    body
+        h1 edit customer with id #{CustomerID}
+        a(href="index") main
+        br
+        input( type='text' id="name" value=Name )
+        input( type='text' id="address" value=Address )
+        input( type='text' id="city" value=City )
+        input( type='text' id="phone" value=Phone )
+        input( type='text' id="email" value=Email )
+        button(onclick='update_customer()') Update
+    script.
+        function update_customer() {
+            var name = document.getElementById('name').value
+            var address = document.getElementById('address').value
+            var city = document.getElementById('city').value
+            var phone = document.getElementById('phone').value
+            var email = document.getElementById('email').value
+            if (name == "" || address == "" || city == "") {
+                alert("not allowed null");
+            }
+            else {
+                var updateCustomer = {
+                    CustomerID: "#{CustomerID}",
+                    Name: name,
+                    Address: address,
+                    City: city,
+                    Phone: phone,
+                    Email: email
+                }
+                fetch(`http://localhost:3000/api/customers`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(updateCustomer)
+                }).then(res => {
+                    if (res.ok) {
+                        return res.json();
+                    } else {
+                        alert("Error")
+                    }
+                })
+            }
+        }

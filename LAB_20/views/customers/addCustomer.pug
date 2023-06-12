@@ -1,0 +1,53 @@
+doctype=html
+html
+    head
+        title Add Customer
+    body
+        h1 Add customer
+        a(href="index") main
+        br
+        h3 Name
+        input( type='text' id="name" value=Name )
+        h3 Address
+        input( type='text' id="address" value=Address )
+        h3 City
+        input( type='text' id="city" value=City )
+        h3 Phone
+        input( type='text' id="phone" value=Phone )
+        h3 Email
+        input( type='text' id="email" value=Email )
+        button(onclick='add_customer()') Add
+    script.
+        function add_customer() {
+            var name = document.getElementById('name').value
+            var address = document.getElementById('address').value
+            var city = document.getElementById('city').value
+            var phone = document.getElementById('phone').value
+            var email = document.getElementById('email').value
+            if (name == "" || address == "" || city == "") {
+                alert("not allowed null");
+            }
+            else {
+                var addCustomer = {
+                    Name: name,
+                    Address: address,
+                    City: city,
+                    Phone: phone,
+                    Email: email
+                }
+                fetch(`http://localhost:3000/api/customers`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(addCustomer)
+                }).then(res => {
+                    if (res.ok) {
+                        return res.json();
+                    } else {
+                        alert("Error")
+                    }
+                })
+            }
+        }
