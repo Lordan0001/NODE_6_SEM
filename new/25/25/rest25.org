@@ -1,0 +1,246 @@
+#+Title: First steps versus Postman
+
+* GET
+** simple
+#+name: getFaculties
+#+begin_src restclient :results value :var port=5000 :var addr='ability'
+    GET http://localhost::port/api/:addr
+#+end_src
+
+#+RESULTS: getFaculties
+[
+  {
+    "actions": "read",
+    "subject": [
+      "Repos",
+      "Commits"
+    ]
+  }
+]
+
+
+** hard
+
+#+name: getSubjectsByFaculties
+#+begin_src restclient :results value :var port=5000 :var parm1='user' :var parm2='2'
+    GET http://localhost::port/api/:parm1/:parm2
+#+end_src
+
+
+#+name: getAuditoriumsByAuditoriumType
+#+begin_src restclient :results value :var port=5000 :var repId='' :var comId=''
+    GET http://localhost::port/api/repos/:repId/commits/:comId
+#+end_src
+
+
+* POST
+
+** faculty
+
+#+name postFaculty
+#+begin_src restclient :var port=3000 :var addr='faculties'
+  POST http://localhost::port/api/:addr
+  Content-Type: application/json
+
+  {
+  "FACULTY":"OG",
+  "FACULTY_NAME":"Не стоит",
+  "PULPIT": {
+            "PULPIT": "og",
+            "PULPIT_NAME": "hh"
+  }
+  }
+#+end_src
+
+
+** pulpit
+
+#+name postPulpit
+#+begin_src restclient :var port=3000 :var addr='pulpits'
+  POST http://localhost::port/api/:addr
+  Content-Type: application/json
+
+  {
+      "PULPIT":"EEE",
+      "PULPIT_NAME":"AAA",
+      "FACULTY": "WWW",
+      "FACULTY_NAME": "World Wide Web"
+  }
+#+end_src
+
+
+** teacher
+
+#+name postTeacher
+#+begin_src restclient :var port=3000 :var addr='teachers'
+  POST http://localhost::port/api/:addr
+  Content-Type: application/json
+
+  {
+      "TEACHER":"BBB",
+      "TEACHER_NAME":"Abdula Ahmed Ananas",
+      "PULPIT": "AAA"
+  }
+#+end_src
+
+
+** subject
+
+#+name setSubject
+#+begin_src restclient :var port=3000 :var addr='subjects'
+   POST http://localhost::port/api/:addr
+   Content-Type: application/json
+
+   {
+       "SUBJECT": "Gav",
+       "SUBJECT_NAME": "OwOlogic",
+       "PULPIT": "AAA"
+   }
+#+end_src
+
+
+** auditorium
+
+#+name setAuditorium
+#+begin_src restclient :var port=3000 :var addr='auditoriums'
+  POST http://localhost::port/api/:addr
+  Content-Type: application/json
+
+  {
+     "AUDITORIUM": "777-7",
+     "AUDITORIUM_NAME": "777-7",
+     "AUDITORIUM_TYPE": "MOM",
+     "AUDITORIUM_CAPACITY": "500"
+  }
+#+end_src
+
+
+** auditorium_type
+
+#+name postAuditoriumType
+#+begin_src restclient :var port=3000 :var addr='auditoriumtypes'
+  POST http://localhost::port/api/:addr
+  Content-Type: application/json
+
+  {
+      "AUDITORIUM_TYPE":"TST",
+      "AUDITORIUM_TYPENAME":"Test"
+  }
+#+end_src
+
+
+* PUT
+
+** updFaculty
+
+#+name updFaculty
+#+begin_src restclient :var port=3000 :var addr='faculties'
+  PUT http://localhost::port/api/:addr
+  Content-Type: application/json
+
+  {
+    "FACULTY":"GG",
+    "FACULTY_NAME":"Хехехе"
+  }
+#+end_src
+
+
+** updPulpit
+
+#+name updPulpit
+#+begin_src restclient :var port=3000 :var addr='pulpits'
+  PUT http://localhost::port/api/:addr
+  Content-Type: application/json
+
+  {
+    "PULPIT":"AAA",
+    "PULPIT_NAME":"subpulpit",
+    "FACULTY":"GG"
+  }
+#+end_src
+
+#+RESULTS:
+#+BEGIN_SRC js
+{
+  "PULPIT": "AAA",
+  "PULPIT_NAME": "subpulpit"
+}
+// PUT http://localhost:3000/api/pulpits
+// HTTP/1.1 200 OK
+// Content-Type: application/json; charset=utf-8
+// Content-Length: 42
+// Date: Sun, 30 Apr 2023 22:00:47 GMT
+// Connection: keep-alive
+// Keep-Alive: timeout=5
+// Request duration: 0.144346s
+#+END_SRC
+
+
+** updTeacher
+
+#+name updTeacher
+#+begin_src restclient :var port=3000 :var addr='teachers'
+  PUT http://localhost::port/api/:addr
+  Content-Type: application/json
+
+  {
+    "TEACHER":"AAA",
+    "TEACHER_NAME":"Иванов Иван Иванович",
+    "PULPIT":"AAA"
+  }
+#+end_src
+
+
+** updSubject
+
+#+name updSubject
+#+begin_src restclient :var port=3000 :var addr='subjects'
+  PUT http://localhost::port/api/:addr
+  Content-Type: application/json
+
+  {
+     "SUBJECT": "Gav",
+     "SUBJECT_NAME": "OwOmagic",
+     "PULPIT": "AAA"
+  }
+#+end_src
+
+
+** updAuditorium
+
+#+name updAuditorium
+#+begin_src restclient :var port=3000 :var addr='auditoriums'
+  PUT http://localhost::port/api/:addr
+  Content-Type: application/json
+
+  {
+     "AUDITORIUM":"666-6",
+     "AUDITORIUM_NAME": "666-6",
+     "AUDITORIUM_TYPE": "TST",
+     "AUDITORIUM_CAPACITY": "20"
+  }
+#+end_src
+
+
+** updAuditoriumType
+
+#+name updAuditoriumType
+#+begin_src restclient :var port=3000 :var addr='auditoriumtypes'
+  PUT http://localhost::port/api/:addr
+  Content-Type: application/json
+
+  {
+     "AUDITORIUM_TYPENAME": "Super-auditorium",
+     "AUDITORIUM_TYPE": "TST"
+   }
+#+end_src
+
+
+* DELETE
+
+** simple
+#+name: getFaculties
+#+begin_src restclient :results value :var port=3000 :var addr='faculties' :var val='WWW'
+    DELETE http://localhost::port/api/:addr/:val
+#+end_src 
+ 

@@ -1,0 +1,13 @@
+{
+  "name": "25",
+  "version": "1.0.0",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "casl": "^1.1.0",
+    "cookie-parser": "^1.4.6",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.0",
+    "sequelize": "^6.32.1",
+    "sqlite3": "^5.1.6"
+  }
+}

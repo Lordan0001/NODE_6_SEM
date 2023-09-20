@@ -218,35 +218,39 @@ let server = http.createServer(async (req, res) => {
             req.on('end', async () => {
                 data = JSON.parse(data);
                 let faculty;
-                if (data.Pulpit) {
-                    const pulpits = data.Pulpit.map(pulpitData => ({
-                        PULPIT: pulpitData.pulpit,
-                        PULPIT_NAME: pulpitData.pulpit_name
-                    }));
-                    faculty = await prisma.FACULTY.create({
-                        data: {
-                            FACULTY: data.faculty,
-                            FACULTY_NAME: data.faculty_name,
-                            PULPIT_PULPIT_FACULTYToFACULTY: {
-                                createMany: {
-                                    data: pulpits
+                try {
+                    if (data.Pulpit) {
+                        const pulpits = data.Pulpit.map(pulpitData => ({
+                            PULPIT: pulpitData.pulpit,
+                            PULPIT_NAME: pulpitData.pulpit_name
+                        }));
+                        faculty = await prisma.FACULTY.create({
+                            data: {
+                                FACULTY: data.faculty,
+                                FACULTY_NAME: data.faculty_name,
+                                PULPIT_PULPIT_FACULTYToFACULTY: {
+                                    createMany: {
+                                        data: pulpits
+                                    }
                                 }
-                            }
-                        },
-                        include: { PULPIT_PULPIT_FACULTYToFACULTY: true }
-                    });
-
-                } else {
-                    faculty = await prisma.FACULTY.create({
-                        data: {
-
-                            FACULTY: data.faculty,
-                            FACULTY_NAME: data.faculty_name
-                        },
-                    })
+                            },
+                            include: { PULPIT_PULPIT_FACULTYToFACULTY: true }
+                        });
+                    } else {
+                        faculty = await prisma.FACULTY.create({
+                            data: {
+                                FACULTY: data.faculty,
+                                FACULTY_NAME: data.faculty_name
+                            },
+                        });
+                    }
+                    res.end(JSON.stringify(faculty));
+                } catch (error) {
+                    console.error(error); // Log the error for debugging purposes
+                    res.statusCode = 500; // Internal Server Error
+                    res.end(JSON.stringify({ error: 'duplicate key value.' }));
                 }
-                res.end(JSON.stringify(faculty))
-            })
+            });
         }
 
         else if (url.parse(req.url).pathname === "/api/pulpits") {
@@ -257,7 +261,7 @@ let server = http.createServer(async (req, res) => {
             req.on('end', async () => {
                 data = JSON.parse(data);
                 let PULPIT;
-                // try {
+                try {
                     PULPIT = await prisma.PULPIT.create({
                         data: {
                             PULPIT: data.PULPIT,
@@ -274,13 +278,14 @@ let server = http.createServer(async (req, res) => {
                                 }
                             }
                         }
-                    })
-                    res.end(JSON.stringify(PULPIT))
-                // }
-                // catch{
-                //     res.end(JSON.stringify('adding error'))
-                // }
-            })
+                    });
+                    res.end(JSON.stringify(PULPIT));
+                } catch (error) {
+                    console.error(error); // Log the error for debugging purposes
+                    res.statusCode = 500; // Internal Server Error
+                    res.end(JSON.stringify({ error: 'duplicate key value' }));
+                }
+            });
         }
         else if (url.parse(req.url).pathname === "/api/subjects") {
             let data = "";
