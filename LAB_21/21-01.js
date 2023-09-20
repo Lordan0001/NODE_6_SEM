@@ -6,7 +6,7 @@ const hbs = require('express-handlebars').create({
     extname: '.hbs',
     helpers: {
         deny() {
-            return `<button onClick="window.location.href='./'">Отказаться</button>`
+            return `<button id="deleteButton" onClick="window.location.href='./'">Отказаться</button>`;
         }
     }
 });
@@ -139,7 +139,6 @@ app.post('/Delete', (req, res) => {
         os = os.filter(element => {
             return FIO !== element.FIO || telephone !== element.Telephone;
         });
-
 
         const result2 = JSON.stringify(os);
         fs.writeFileSync('./Telephones.json', result2);

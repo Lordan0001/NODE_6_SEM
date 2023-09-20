@@ -23,6 +23,23 @@
     <input name="String" type="text" style="display: none;" value="{{FIO}}  {{Telephone}}"><br>    
 </form>
 
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        const deleteButton = document.getElementById('Delete');
+        const inputs = document.querySelectorAll('input[type="text"]');
+        const originalValues = Array.from(inputs).map(input => input.value);
+
+        inputs.forEach((input) => {
+            input.addEventListener('input', () => {
+                const changedValues = Array.from(inputs).map(input => input.value);
+                const isChanged = originalValues.some((value, index) => value !== changedValues[index]);
+
+                deleteButton.disabled = isChanged;
+            });
+        });
+    });
+</script>
+
 
 <script src="./disabled.js" type="text/javascript">
 </script>

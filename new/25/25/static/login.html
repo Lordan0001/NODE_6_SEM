@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="bootstrap.css" type="text/css" />
+    <title>PSKP-25</title>
+</head>
+
+<body>
+    <div class="container d-flex align-items-center justify-content-center" style="margin-top: 13%;">
+
+        <form action="/login" method="POST">
+            <label>
+                Username
+                <input class="form-control mb-2" type="text" name="username" required />
+            </label>
+            <br />
+
+            <label>
+                Password
+                <input class="form-control" type="password" name="password" required />
+            </label>
+            <br />
+            <br />
+
+            <button class="btn btn-primary" type="submit">
+                Sign In
+            </button>
+            <button class="btn btn-secondary ms-3" type="button" onclick="location.href = 'http://localhost:5000/register'">
+                Create account
+            </button>
+        </form>
+
+    </div>
+</body>
+
+</html>

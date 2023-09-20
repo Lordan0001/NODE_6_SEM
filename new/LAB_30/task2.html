@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+</head>
+
+<body>
+	<p>task2</p>
+	<p id='sum'> sum(3,4) =</p>
+	<p id='mul'> mul(3,4) =</p>
+	<p id='sub'> sub(3,4) =</p>
+	<script>
+		(async () => {
+			const sum = document.getElementById('sum')
+			const sub = document.getElementById('sub')
+			const mul = document.getElementById('mul')
+			const spanSum = document.createElement('span')
+			const spanSub = document.createElement('span')
+			const spanMul = document.createElement('span')
+			const wasmCode = fetch('/p.wasm')
+			const { instance } = await WebAssembly.instantiateStreaming(wasmCode)
+			spanSum.innerHTML = instance.exports.sum(3, 4)
+			spanSub.innerHTML = instance.exports.sub(3, 4)
+			spanMul.innerHTML = instance.exports.mul(3, 4)
+			sum.appendChild(spanSum)
+			sub.appendChild(spanSub)
+			mul.appendChild(spanMul)
+		})();
+	</script>
+</body>
+
+</html>
