@@ -1,0 +1,17 @@
+[
+  {
+    "id": 1,
+    "name": "VLADOS",
+    "number": 322
+  },
+  {
+    "id": 2,
+    "name": "secondName",
+    "number": "2222"
+  },
+  {
+    "id": 3,
+    "name": "Test",
+    "number": "+37529111111"
+  }
+]
