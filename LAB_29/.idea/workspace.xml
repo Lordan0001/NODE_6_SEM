@@ -5,23 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="af5c2a51-c97b-49fd-9550-aec09f845c22" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/../LAB_22/.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../LAB_22/.idea/.name" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../LAB_22/.idea/LAB_22.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../LAB_22/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../LAB_22/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../LAB_22/22-01.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../LAB_22/22-02.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../LAB_22/package-lock.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../LAB_22/package.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../LAB_22/user.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../LAB_30/.idea/LAB_30.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../LAB_32/.idea/LAB_32.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../LAB_19/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/../LAB_19/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../LAB_21/21-01.js" beforeDir="false" afterPath="$PROJECT_DIR$/../LAB_21/21-01.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../LAB_21/Telephones.json" beforeDir="false" afterPath="$PROJECT_DIR$/../LAB_21/Telephones.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../LAB_21/views/Update.hbs" beforeDir="false" afterPath="$PROJECT_DIR$/../LAB_21/views/Update.hbs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LAB_18/DB.js" beforeDir="false" afterPath="$PROJECT_DIR$/../LAB_18/DB.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LAB_24/app/24-01.js" beforeDir="false" afterPath="$PROJECT_DIR$/../LAB_24/app/24-01.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LAB_25/middleware/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/../LAB_25/middleware/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LAB_32/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../LAB_32/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -98,6 +85,7 @@
       <workItem from="1694780863617" duration="33000" />
       <workItem from="1694796096486" duration="599000" />
       <workItem from="1695225830116" duration="99000" />
+      <workItem from="1695677241705" duration="89000" />
     </task>
     <servers />
   </component>

@@ -11,7 +11,7 @@ import { handleValidationErrors, checkAuth } from './utils/index.js';
 import { UserController, PostController, CommentController, CategoryController, RoleController, LikeController, MessageController } from './controllers/index.js';
 
 mongoose
-    .connect('mongodb+srv://admin:admin@cluster0.klivmmt.mongodb.net/blog?retryWrites=true&w=majority')
+    .connect('remoute mongodb')
     .then(() => console.log('DB ok'))
     .catch((err) => console.log('DB error', err));
 
